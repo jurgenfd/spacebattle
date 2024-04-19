@@ -1,27 +1,12 @@
 (function() {
-// Battleboat
-// Bill Mei, 2014
-// MIT License
-
-// Thanks to Nick Berry for the inspiration
-// http://www.datagenetics.com/blog/december32011/
-
-// TODO: Add a toggle that visualizes the probability grid via heatmap
-//       (scale a color via max and 0). The toggle only works once the user has
-//       finished placing their ships, or she can cheat easily by placing her ships
-//       outside the regions with the highest probability.
-
-console.log("If you want to try stuff out, run %csetDebug(true);%c in the " +
-	"console before doing anything. You'll also get access to some cool features.",
-	"background: #000; color: #0f0; padding: 2px 5px; border-radius: 2px;", "");
+// Jurgen Doreleijers based on https://github.com/billmei/battleboat
 
 // Global Constants
 var DEBUG_MODE = localStorage.getItem('DEBUG_MODE') === 'true';
 var CONST = {};
 CONST.AVAILABLE_SHIPS = ['carrier', 'battleship', 'destroyer', 'submarine', 'patrolboat'];
 // You are player 0 and the computer is player 1
-// The virtual player is used for generating temporary ships
-// for calculating the probability heatmap
+// A virtual player is used for generating temporary ships for calculating the probability heatmap
 CONST.HUMAN_PLAYER = 0;
 CONST.COMPUTER_PLAYER = 1;
 CONST.VIRTUAL_PLAYER = 2;
