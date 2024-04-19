@@ -60,7 +60,7 @@ Stats.prototype.wonGame = function() {
 Stats.prototype.lostGame = function() {
 	this.gamesPlayed++;
 };
-// Saves the game statistics to localstorage, also uploads where the user placed
+// Saves the game statistics to local storage, also uploads where the user placed
 // their ships to GA so that in the future I'll be able to see
 // which cells humans are disproportionately biased to place ships on.
 Stats.prototype.syncStats = function() {
@@ -168,7 +168,7 @@ Game.prototype.checkIfWon = function() {
 		Game.stats.updateStatsSidebar();
 		this.showRestartSidebar();
 	} else if (this.humanFleet.allShipsSunk()) {
-		alert('Yarr! The computer sank all your ships. Try again.');
+		alert('Arg! AI blew all your ships. Try again.');
 		Game.gameOver = true;
 		Game.stats.lostGame();
 		Game.stats.syncStats();
@@ -1308,8 +1308,8 @@ if (!Array.prototype.map) {
 	};
 }
 
-// Browser compatability workaround for transition end event names.
-// From modernizr: http://stackoverflow.com/a/9090128
+// Browser compatibility workaround for transition end event names.
+// From modernizer: http://stackoverflow.com/a/9090128
 function transitionEndEventName() {
 	var i,
 		undefined,
