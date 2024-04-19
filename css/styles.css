@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
 /* Validated with https://jigsaw.w3.org/css-validator and the VSCode plugin: CSSTree Validator */
 
 /* variables */
@@ -8,25 +9,15 @@
 	--std_padding: 5px;
 	--board_width_with_padding: 430px;
 	--cell_width: 40px;
-	--lightgray: lightgray;
+	--sidebar_width: 150px;
 	--gray: #ddd;
 	--blackish: #222222;
 	--lightblack: #222222;
 	--deepblue: #25567B;
 	--buttonblue: #99C2E1;
-	--orange: #FF9200;
+	--button_shade: #66A3D2;
 	--orange_shade1: #FFB655;
 	--orange_shade2: #FFCE8E;
-}
-
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
-
-/* Best CSS reset according to Jasper and Erkan */
-* {
-	font-size: 100%;
-	border: 0;
-	margin-block-start: 0pt;
-	margin-block-end: 0pt;
 }
 
 html,
@@ -64,7 +55,7 @@ a {
 button {
 	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 	font-size: 1.2em;
-	color: var(--lightgray);
+	color: lightgray;
 	background-color: var(--deepblue);
 	border: none;
 	margin: 1em auto 0 auto;
@@ -89,7 +80,7 @@ button:active {
 #restart-game {
 	position: relative;
 	color: white;
-	background-color: var(--orange);
+	background-color: orange;
 }
 
 #start-game:hover,
@@ -142,17 +133,15 @@ button:active {
 #roster-sidebar,
 #stats-sidebar,
 #restart-sidebar {
-	width: 150px;
+	width: var(--sidebar_width);
 	padding: 20px;
 	margin: 0;
 	background-color: #EEEEEE;
 	position: absolute;
 	top: 4.5em;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
 	border-radius: 5px;
 }
-
+/* JFD: sidebars moved to the left of game-container*/
 #roster-sidebar,
 #restart-sidebar {
 	left: -200px;
@@ -232,6 +221,7 @@ button {
 	background-color: #25567B;
 	border-radius: 5px;
 }
+
 /* JFD: grid div */
 .grid-container:last-child {
 	margin-left: 10px;
@@ -254,22 +244,21 @@ button {
 	height: var(--cell_width);
 	width: var(--cell_width);
 	display: inline-block;
-	background-color: #99C2E1;
+	background-color: var(--buttonblue);
 	margin: 1px;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
 
 .grid-cell:hover {
 	cursor: pointer;
 	/* Fallback for IE */
-	background-color: #66A3D2;
+	background-color: var(--buttonblue_shade);
 }
 
 .human-player .grid-cell:hover {
-	background-color: #99C2E1;
+	background-color: var(--buttonblue);
 }
+
 /* JFD: only on AI board. Image prefetched. */
 .computer-player .grid-cell:hover,
 .computer-player:hover {
@@ -280,7 +269,7 @@ button {
 .human-player .grid-ship:hover {
 	background-color: #808080;
 }
-
+/* JFD: ship hit */
 .grid-miss,
 .grid-miss:hover,
 .human-player .grid-miss:hover {
@@ -307,23 +296,24 @@ button {
 
 .highlight {
 	overflow: visible;
-	/* Bugfix for IE */
+	/* Bugfix for IE JFD: TODO why?*/
 }
 
+/* Unicode Character “↓” (U+2193) 
+a big bouncing orange arrow above current element*/
 .highlight:before {
 	content: "\2193";
 	font-weight: bold;
 	font-size: 75px;
-	color: #FF9200;
-	text-shadow: 0 0 5px #FF9200;
+	color: orange;
+	text-shadow: 0 0 5px orange;
 	position: absolute;
 	width: 100px;
 	height: 100px;
 	top: -100px;
 	left: 50%;
 	margin-left: -50px;
-	-webkit-animation: highlight 1.5s infinite;
-	-o-animation: highlight 1.5s infinite;
+	/* JFD: see below keyframes for animation */
 	animation: highlight 1.5s infinite;
 }
 
@@ -341,74 +331,17 @@ button {
 	}
 }
 
-
-@-webkit-keyframes highlight {
-	0% {
-		-webkit-transform: translateY(0);
-		transform: translateY(0);
-	}
-
-	50% {
-		-webkit-transform: translateY(-20px);
-		transform: translateY(-20px);
-	}
-
-	100% {
-		-webkit-transform: translateY(0);
-		transform: translateY(0);
-	}
-}
-
-@-moz-keyframes highlight {
-	0% {
-		transform: translateY(0);
-	}
-
-	50% {
-		transform: translateY(-20px);
-	}
-
-	100% {
-		transform: translateY(0);
-	}
-}
-
-@-o-keyframes highlight {
-	0% {
-		-o-transform: translateY(0);
-		transform: translateY(0);
-	}
-
-	50% {
-		-o-transform: translateY(-20px);
-		transform: translateY(-20px);
-	}
-
-	100% {
-		-o-transform: translateY(0);
-		transform: translateY(0);
-	}
-}
-
+/* JFD: bouncing orange arrow */
 @keyframes highlight {
 	0% {
-		-webkit-transform: translateY(0);
-		-ms-transform: translateY(0);
-		-o-transform: translateY(0);
 		transform: translateY(0);
 	}
 
 	50% {
-		-webkit-transform: translateY(-20px);
-		-ms-transform: translateY(-20px);
-		-o-transform: translateY(-20px);
 		transform: translateY(-20px);
 	}
 
 	100% {
-		-webkit-transform: translateY(0);
-		-ms-transform: translateY(0);
-		-o-transform: translateY(0);
 		transform: translateY(0);
 	}
 }

@@ -1315,10 +1315,7 @@ function transitionEndEventName() {
 		undefined,
 		el = document.createElement('div'),
 		transitions = {
-			'transition':'transitionend',
-			'OTransition':'otransitionend',  // oTransitionEnd in very old Opera
-			'MozTransition':'transitionend',
-			'WebkitTransition':'webkitTransitionEnd'
+			'transition':'transitionend'
 		};
 
 	for (i in transitions) {
