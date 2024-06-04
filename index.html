@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Validated by: https://validator.w3.org -->
+<!-- Validated at: https://validator.w3.org -->
 
 <head>
 	<meta charset="UTF-8">
@@ -10,6 +10,15 @@
 	<link rel="author" href="https://github.com/jurgenfd">
 	<link href="css/styles.css" rel="stylesheet" media="all">
 	<link href="css/style_validation.css" rel="stylesheet" media="all">
+	<script defer type="module" src="js/spaceBattle.js"></script>
+	<script defer type="module" src="js/global.js"></script>
+	<script defer type="module" src="js/util.js"></script>
+	<script defer type="module" src="js/ai.js"></script>
+	<script defer type="module" src="js/fleet.js"></script>
+	<script defer type="module" src="js/grid.js"></script>
+	<script defer type="module" src="js/ship.js"></script>
+	<script defer type="module" src="js/stats.js"></script>
+	<script defer type="module" src="js/game.js"></script>
 </head>
 
 <body>
@@ -41,6 +50,7 @@
 				</ul>
 				<!-- JFD: data-direction is used by JS where: Ship.DIRECTION_VERTICAL = 0; -->
 				<button type="button" id="rotate-button" data-direction="0">Rotate Ship</button>
+				<button type="button" id="random-board">Random Board</button>
 				<button type="button" id="start-game" class="hidden">Start Game</button>
 				<button type="button" id="place-randomly" class="hidden">Place Randomly and Start</button>
 			</div>
@@ -73,8 +83,6 @@
 			</a>
 		</p>
 	</div>
-
-	<script src="js/spaceBattle.js"></script>
 	<!-- JFD: prefetching image data and moved out sight by css. -->
 	<span class="prefetch" id="prefetch1"></span>
 	<span class="prefetch" id="prefetch2"></span>

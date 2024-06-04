@@ -1,32 +1,54 @@
+import { CONST } from './global.js';
+import { Grid } from './grid.js';
+import { Fleet } from './fleet.js';
+import { Stats } from './stats.js';
+import { AI } from './ai.js';
+import { Tutorial } from './tutorial.js';
 
-// Game manager object
-// Constructor
-function Game(size) {
-	Game.size = size;
-	this.shotsTaken = 0;
-	this.createGrid();
-	this.init();
-}
-Game.size = 10; // Default grid size is 10x10
-Game.gameOver = false;
-// Checks if the game is won, and if it is, re-initializes the game
-Game.prototype.checkIfWon = function() {
-	if (this.computerFleet.allShipsSunk()) {
-		alert('Congratulations, you win!');
-		Game.gameOver = true;
-		Game.stats.wonGame();
-		Game.stats.syncStats();
-		Game.stats.updateStatsSidebar();
-		this.showRestartSidebar();
-	} else if (this.humanFleet.allShipsSunk()) {
-		alert('Arg! AI blew all your ships. Try again.');
-		Game.gameOver = true;
-		Game.stats.lostGame();
-		Game.stats.syncStats();
-		Game.stats.updateStatsSidebar();
-		this.showRestartSidebar();
+export class Game {
+	static stats = new Stats(); // could be non-static JFD thinks.
+
+	constructor(size) {
+		this.size = size;
+		this.usedShips = [CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED];
+		this.shotsTaken = 0;
+		this.gameOver = false;
+		this.createGrid();
+		this.init();
+		this.gameTutorial = new Tutorial();
 	}
-};
+
+	init() {
+		this.humanGrid = new Grid(Game.size);
+		this.computerGrid = new Grid(Game.size);
+		this.humanFleet = new Fleet(this.humanGrid, CONST.HUMAN_PLAYER);
+		this.computerFleet = new Fleet(this.computerGrid, CONST.COMPUTER_PLAYER);
+
+		this.robot = new AI(this);
+		Game.stats = new Stats();
+		Game.stats.updateStatsSidebar();
+	}
+
+	checkIfWon() {
+		if (this.computerFleet.allShipsSunk()) {
+			alert('Congratulations, you win!');
+			Game.gameOver = true;
+			Game.stats.wonGame();
+			Game.stats.syncStats();
+			Game.stats.updateStatsSidebar();
+			this.showRestartSidebar();
+		} else if (this.humanFleet.allShipsSunk()) {
+			alert('Yarr! The computer sank all your ships. Try again.');
+			Game.gameOver = true;
+			Game.stats.lostGame();
+			Game.stats.syncStats();
+			Game.stats.updateStatsSidebar();
+			this.showRestartSidebar();
+		}
+	}
+}
+
+
 // Shoots at the target player on the grid.
 // Returns {int} Constants.TYPE: What the shot uncovered
 Game.prototype.shoot = function(x, y, targetPlayer) {
@@ -330,61 +352,4 @@ Game.prototype.createGrid = function() {
 			}
 		}
 	}
-};
-// Initializes the Game. Also resets the game if previously initialized
-Game.prototype.init = function() {
-	this.humanGrid = new Grid(Game.size);
-	this.computerGrid = new Grid(Game.size);
-	this.humanFleet = new Fleet(this.humanGrid, CONST.HUMAN_PLAYER);
-	this.computerFleet = new Fleet(this.computerGrid, CONST.COMPUTER_PLAYER);
-
-	this.robot = new AI(this);
-	Game.stats = new Stats();
-	Game.stats.updateStatsSidebar();
-
-	// Reset game variables
-	this.shotsTaken = 0;
-	this.readyToPlay = false;
-	this.placingOnGrid = false;
-	Game.placeShipDirection = 0;
-	Game.placeShipType = '';
-	Game.placeShipCoords = [];
-
-	this.resetRosterSidebar();
-
-	// Add a click listener for the Grid.shoot() method for all cells
-	// Only add this listener to the computer's grid
-	var computerCells = document.querySelector('.computer-player').childNodes;
-	for (var j = 0; j < computerCells.length; j++) {
-		computerCells[j].self = this;
-		computerCells[j].addEventListener('click', this.shootListener, false);
-	}
-
-	// Add a click listener to the roster	
-	var playerRoster = document.querySelector('.fleet-roster').querySelectorAll('li');
-	for (var i = 0; i < playerRoster.length; i++) {
-		playerRoster[i].self = this;
-		playerRoster[i].addEventListener('click', this.rosterListener, false);
-	}
-
-	// Add a click listener to the human player's grid while placing
-	var humanCells = document.querySelector('.human-player').childNodes;
-	for (var k = 0; k < humanCells.length; k++) {
-		humanCells[k].self = this;
-		humanCells[k].addEventListener('click', this.placementListener, false);
-		humanCells[k].addEventListener('mouseover', this.placementMouseover, false);
-		humanCells[k].addEventListener('mouseout', this.placementMouseout, false);
-	}
-
-	var rotateButton = document.getElementById('rotate-button');
-	rotateButton.addEventListener('click', this.toggleRotation, false);
-	var startButton = document.getElementById('start-game');
-	startButton.self = this;
-	startButton.addEventListener('click', this.startGame, false);
-	var resetButton = document.getElementById('reset-stats');
-	resetButton.addEventListener('click', Game.stats.resetStats, false);
-	var randomButton = document.getElementById('place-randomly');
-	randomButton.self = this;
-	randomButton.addEventListener('click', this.placeRandomly, false);
-	this.computerFleet.placeShipsRandomly();
 };
