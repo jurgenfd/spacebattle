@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Validated at: https://validator.w3.org -->
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,maximum-scale=1">
+	<title>SpaceBattle - AI beats space captain.</title>
+	<link rel="icon" type="image/png" href="img/favicon.png">
+	<link rel="author" href="https://github.com/jurgenfd">
+	<link href="css/styles.css" rel="stylesheet" media="all">
+	<link href="css/style_validation.css" rel="stylesheet" media="all">
+	<script defer type="module" src="js/global.js"></script>
+	<script defer type="module" src="js/ai.js"></script>
+	<script defer type="module" src="js/fleet.js"></script>
+	<script defer type="module" src="js/grid.js"></script>
+	<script defer type="module" src="js/ship.js"></script>
+	<script defer type="module" src="js/stats.js"></script>
+	<script defer type="module" src="js/game.js"></script> <!-- last for starting the game -->
+</head>
+
+<body>
+	<div class="container">
+		<h1>SpaceBattle</h1>
+		<p class="tagline">AI beats space captain.</p>
+		<p>How to play</p>
+		<ol class="instructions">
+			<li id="step1">Select your ships from the left-hand side</li>
+			<li id="step2">Place your ships on your map</li>
+			<li id="step3">Click on the cells of the enemy's map
+				to find and destroy all five enemy ships</li>
+			<li id="step4">The computer will fire on your ships
+				immediately after you fire on its ships.</li>
+		</ol>
+		<div class="game-container">
+			<div id="restart-sidebar" class="hidden">
+				<h2>Try Again</h2>
+				<button type="button" id="restart-game">Restart Game</button>
+			</div>
+			<div id="roster-sidebar">
+				<h2>Place Your Ships</h2>
+				<ul class="fleet-roster">
+					<li id="patrolboat">Patrol Boat</li>
+					<li id="submarine">Submarine</li>
+					<li id="destroyer">Destroyer</li>
+					<li id="battleship">Battleship</li>
+					<li id="carrier">Carrier</li>
+				</ul>
+				<!-- JFD: data-direction is used by JS where: Ship.DIRECTION_VERTICAL = 0; -->
+				<button type="button" id="rotate-button" data-direction="0">Rotate Ship</button>
+				<button type="button" id="random-board">Random Board</button>
+				<button type="button" id="start-game" class="hidden">Start Game</button>
+				<button type="button" id="place-randomly" class="hidden">Place Randomly and Start</button>
+			</div>
+			<div id="stats-sidebar">
+				<h2>Stats</h2>
+				<p><strong>Games Won</strong></p>
+				<p id="stats-wins">0 of 0</p>
+				<p><strong>Accuracy</strong></p>
+				<p id="stats-accuracy">0%</p>
+				<button type="button" id="reset-stats">Reset Stats</button>
+				<button type="button" id="prob-heatmap" class="hidden">Show Probability Heatmap</button>
+			</div>
+			<div class="grid-container">
+				<h2>Your Fleet</h2>
+				<div class="grid human-player"><span class="no-js">Please enable JavaScript to play this game</span>
+				</div>
+			</div>
+			<div class="grid-container">
+				<h2>Enemy Fleet</h2>
+				<div class="grid computer-player"><span class="no-js">Please enable JavaScript to play this game</span>
+				</div>
+			</div>
+		</div>
+
+		<p>Adapted by Jurgen Doreleijers on <a href="https://github.com/jurgenfd/spacebattle">GitHub</a> from Bill Mei.
+		</p>
+		<p>
+			<a href="http://jigsaw.w3.org/css-validator/check/referer">
+				<img id="validation_image" src="./img/vcss-blue.gif" alt="Valid CSS!">
+			</a>
+		</p>
+	</div>
+	<!-- JFD: prefetching image data and moved out sight by css. -->
+	<span class="prefetch" id="prefetch1"></span>
+	<span class="prefetch" id="prefetch2"></span>
+</body>
+
+</html>
