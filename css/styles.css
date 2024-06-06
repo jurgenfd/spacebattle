@@ -27,8 +27,11 @@ body {
 	margin: 0pt;
 	background-color: var(--gray);
 	min-width: var(--min_width);
-	/* TODO: mobile first */
 }
+
+/* ul {
+	padding-inline-start: 0; /* JFD: remove default padding from user agent */
+} */
 
 h1,
 h2,
@@ -61,6 +64,15 @@ button {
 	margin: 1em auto 0 auto;
 	padding: 10px;
 	border-radius: 5px;
+}
+
+div {
+	padding: 0;
+	margin: 0;
+	/** box-sizing: border-box; JFD: see section "content boxes and border boxes" 
+	in https://internetingishard.netlify.app/html-and-css/css-box-model/	
+	tip from Stefan but unneeded after fixing another bug.
+	*/
 }
 
 button:hover {
@@ -113,13 +125,6 @@ button:active {
 	margin-bottom: 2em;
 }
 
-.instructions {
-	width: auto;
-	display: inline-block;
-	text-align: left;
-	margin: 0 auto 3em auto;
-}
-
 .container {
 	width: 870px;
 	text-align: center;
@@ -161,6 +166,7 @@ button:active {
 .fleet-roster {
 	position: relative;
 	list-style: none;
+	padding: 0;
 }
 
 /* JFD: button boat */
@@ -222,11 +228,12 @@ button {
 	border-radius: 5px;
 }
 
-/* JFD: grid div */
+/* JFD: grid div
 .grid-container:last-child {
 	margin-left: 10px;
-	border: #F60018;
+	/* border: #F60018; 
 }
+*/
 
 /* JFD: will be removed by JS */
 .no-js {
@@ -294,11 +301,6 @@ button {
 	background-color: #222222;
 }
 
-.highlight {
-	overflow: visible;
-	/* Bugfix for IE JFD: TODO why?*/
-}
-
 /* Unicode Character “↓” (U+2193) 
 a big bouncing orange arrow above current element*/
 .highlight:before {
@@ -321,27 +323,12 @@ a big bouncing orange arrow above current element*/
 	font-weight: bold;
 }
 
-@media(max-width: 1300px) {
+/* @media(max-width: 1300px) {
 	.container {
-		width: 440px;
+		width: 440px; /* JFD: ensures only 1 board across.
 	}
 
 	.grid-container:last-child {
 		margin-left: 0;
 	}
-}
-
-/* JFD: bouncing orange arrow */
-@keyframes highlight {
-	0% {
-		transform: translateY(0);
-	}
-
-	50% {
-		transform: translateY(-20px);
-	}
-
-	100% {
-		transform: translateY(0);
-	}
-}
+} */

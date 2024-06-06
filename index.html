@@ -10,28 +10,13 @@
 	<link rel="author" href="https://github.com/jurgenfd">
 	<link href="css/styles.css" rel="stylesheet" media="all">
 	<link href="css/style_validation.css" rel="stylesheet" media="all">
-	<script defer type="module" src="js/global.js"></script>
-	<script defer type="module" src="js/ai.js"></script>
-	<script defer type="module" src="js/fleet.js"></script>
-	<script defer type="module" src="js/grid.js"></script>
-	<script defer type="module" src="js/ship.js"></script>
-	<script defer type="module" src="js/stats.js"></script>
-	<script defer type="module" src="js/game.js"></script> <!-- last for starting the game -->
+	<script defer type="module" src="js/_main.js"></script>
 </head>
 
 <body>
 	<div class="container">
 		<h1>SpaceBattle</h1>
 		<p class="tagline">AI beats space captain.</p>
-		<p>How to play</p>
-		<ol class="instructions">
-			<li id="step1">Select your ships from the left-hand side</li>
-			<li id="step2">Place your ships on your map</li>
-			<li id="step3">Click on the cells of the enemy's map
-				to find and destroy all five enemy ships</li>
-			<li id="step4">The computer will fire on your ships
-				immediately after you fire on its ships.</li>
-		</ol>
 		<div class="game-container">
 			<div id="restart-sidebar" class="hidden">
 				<h2>Try Again</h2>
@@ -48,7 +33,6 @@
 				</ul>
 				<!-- JFD: data-direction is used by JS where: Ship.DIRECTION_VERTICAL = 0; -->
 				<button type="button" id="rotate-button" data-direction="0">Rotate Ship</button>
-				<button type="button" id="random-board">Random Board</button>
 				<button type="button" id="start-game" class="hidden">Start Game</button>
 				<button type="button" id="place-randomly" class="hidden">Place Randomly and Start</button>
 			</div>

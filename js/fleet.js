@@ -1,13 +1,14 @@
 import { CONST } from './global.js';
 import { Ship } from './ship.js';
-// This object is used to keep track of a player's portfolio of ships
+import { boardSize, Game } from './battleGame.js';
 
 export class Fleet {
-	constructor(playerGrid, player) {
+	constructor(game, playerGrid, player) {
+		this.game = game;
 		this.numShips = CONST.AVAILABLE_SHIPS.length;
 		this.playerGrid = playerGrid;
 		this.player = player;
-		this.fleetRoster = [];
+		this.fleetRoster = []; // portfolio of ships
 		this.populate();
 	}
 
@@ -48,12 +49,12 @@ export class Fleet {
 			var illegalPlacement = true;
 
 			// Prevents the random placement of already placed ships
-			if (this.player === CONST.HUMAN_PLAYER && Game.usedShips[i] === CONST.USED) {
+			if (this.player === CONST.HUMAN_PLAYER && this.game.usedShips[i] === CONST.USED) {
 				continue;
 			}
 			while (illegalPlacement) {
-				var randomX = Math.floor(Game.size * Math.random());
-				var randomY = Math.floor(Game.size * Math.random());
+				var randomX = Math.floor(boardSize * Math.random());
+				var randomY = Math.floor(boardSize * Math.random());
 				var randomDirection = Math.floor(2 * Math.random());
 
 				if (this.fleetRoster[i].isLegal(randomX, randomY, randomDirection)) {
@@ -64,10 +65,10 @@ export class Fleet {
 					continue;
 				}
 			}
-			if (this.player === CONST.HUMAN_PLAYER && Game.usedShips[i] !== CONST.USED) {
+			if (this.player === CONST.HUMAN_PLAYER && this.game.usedShips[i] !== CONST.USED) {
 				for (var j = 0; j < shipCoords.length; j++) {
 					this.playerGrid.updateCell(shipCoords[j].x, shipCoords[j].y, 'ship', this.player);
-					Game.usedShips[i] = CONST.USED;
+					this.game.usedShips[i] = CONST.USED;
 				}
 			}
 		}
