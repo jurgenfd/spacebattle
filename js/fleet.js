@@ -1,6 +1,6 @@
 import { CONST } from './global.js';
 import { Ship } from './ship.js';
-import { boardSize, Game } from './battleGame.js';
+import { Game } from './battleGame.js';
 
 export class Fleet {
 	constructor(game, playerGrid, player) {
@@ -53,8 +53,8 @@ export class Fleet {
 				continue;
 			}
 			while (illegalPlacement) {
-				var randomX = Math.floor(boardSize * Math.random());
-				var randomY = Math.floor(boardSize * Math.random());
+				var randomX = Math.floor(CONST.SIZE * Math.random());
+				var randomY = Math.floor(CONST.SIZE * Math.random());
 				var randomDirection = Math.floor(2 * Math.random());
 
 				if (this.fleetRoster[i].isLegal(randomX, randomY, randomDirection)) {

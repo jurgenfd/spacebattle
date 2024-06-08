@@ -6,34 +6,38 @@ import { Ship } from './ship.js';
 import { Stats } from './stats.js';
 import { AI } from './ai.js';
 
-export const boardSize = 10;
-
 export class Game {
-	static gameOver = false;
-	static size = boardSize;
-	static placeShipDirection = 0;
-	static placeShipType = '';
-	static placeShipCoords = [];
-	static stats = new Stats();
 
-	constructor(size) {
+	constructor() {
 		this.usedShips = [CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED];
 		this.shotsTaken = 0;
 		this.readyToPlay = false;
 		this.placingOnGrid = false;
 		this.createGrid();
-		Game.stats.updateStatsSidebar();
+		this.placeShipDirection = 0;
+		this.placeShipType = '';
+		this.placeShipCoords = [];
+		this.gameOver = false;
+		this.stats = new Stats();
+		this.stats.updateStatsSidebar();
 		this.init();
 	}
 
 	init() {
-		this.humanGrid = new Grid(Game.size);
-		this.computerGrid = new Grid(Game.size);
+		this.humanGrid = new Grid(CONST.SIZE);
+		this.computerGrid = new Grid(CONST.SIZE);
 		this.humanFleet = new Fleet(this, this.humanGrid, CONST.HUMAN_PLAYER);
 		this.computerFleet = new Fleet(this, this.computerGrid, CONST.COMPUTER_PLAYER);
 
 		this.resetRosterSidebar();
+		this.setupListeners();
+	}
 
+	setupAI() {
+		this.robot = new AI(this);
+	}
+
+	setupListeners() {
 		// Add a click listener for the Grid.shoot() method for all cells
 		// Only add this listener to the computer's grid
 		var computerCells = document.querySelector('.computer-player').childNodes;
@@ -43,7 +47,7 @@ export class Game {
 			cell.addEventListener('click', this.shootListener, false);
 		}
 
-		// Add a click listener to the roster	
+		// Add a click listener to the li's in the roster	
 		var playerRoster = document.querySelector('.fleet-roster').querySelectorAll('li');
 		for (var i = 0; i < playerRoster.length; i++) {
 			const ship = playerRoster[i];
@@ -63,35 +67,37 @@ export class Game {
 
 		var rotateButton = document.getElementById('rotate-button');
 		rotateButton.addEventListener('click', this.toggleRotation, false);
+
 		var startButton = document.getElementById('start-game');
 		startButton.self = this;
 		startButton.addEventListener('click', this.startGame, false);
+
 		var resetButton = document.getElementById('reset-stats');
-		resetButton.addEventListener('click', Game.stats.resetStats, false);
+		resetButton.addEventListener('click', this.stats.resetStats, false);
+
 		var randomButton = document.getElementById('place-randomly');
 		randomButton.self = this;
-
 		randomButton.addEventListener('click', this.placeRandomly, false);
 		this.computerFleet.placeShipsRandomly();
-	}
 
-	setupAI() {
-		this.robot = new AI(this);
+		var titleText = document.getElementById('title');
+		titleText.addEventListener('click', this.toggleHelp, false);
+		this.addTooltipTitle();
 	}
 
 	checkIfWon() {
 		if (this.computerFleet.allShipsSunk()) {
 			alert('Congratulations, you win!');
-			Game.stats.wonGame();
+			this.stats.wonGame();
 		} else if (this.humanFleet.allShipsSunk()) {
 			alert('Yarr! The computer sank all your ships. Try again.');
-			Game.stats.lostGame();
+			this.stats.lostGame();
 		} else {
 			return;
 		}
-		Game.gameOver = true;
-		Game.stats.syncStats();
-		Game.stats.updateStatsSidebar();
+		this.gameOver = true;
+		this.stats.syncStats();
+		this.stats.updateStatsSidebar();
 		this.showRestartSidebar();
 	}
 
@@ -120,6 +126,9 @@ export class Game {
 			targetGrid.updateCell(x, y, 'hit', targetPlayer);
 			// IMPORTANT: This function needs to be called _after_ updating the cell to a 'hit',
 			// because it overrides the CSS class to 'sunk' if we find that the ship was sunk
+			// BUG: 
+			// TODO: 
+			// JFD: on next line in original code as the ship appears not always to be found.
 			targetFleet.findShipByCoords(x, y).incrementDamage(); // increase the damage
 			this.checkIfWon();
 			return CONST.TYPE_HIT;
@@ -141,16 +150,16 @@ export class Game {
 			result = self.shoot(x, y, CONST.COMPUTER_PLAYER);
 		}
 
-		if (result !== null && !Game.gameOver) {
-			Game.stats.incrementShots();
+		if (result !== null && !this.gameOver) {
+			this.stats.incrementShots();
 			if (result === CONST.TYPE_HIT) {
-				Game.stats.hitShot();
+				this.stats.hitShot();
 			}
 			// The AI shoots iff the player clicks on a cell that he/she hasn't
 			// already clicked on yet
 			self.robot.shoot();
 		} else {
-			Game.gameOver = false;
+			this.gameOver = false;
 		}
 	}
 
@@ -165,9 +174,9 @@ export class Game {
 			roster[i].setAttribute('class', classes);
 		}
 		// Set the class of the target ship to 'placing'
-		Game.placeShipType = e.target.getAttribute('id');
-		document.getElementById(Game.placeShipType).setAttribute('class', 'placing');
-		Game.placeShipDirection = parseInt(document.getElementById('rotate-button').getAttribute('data-direction'));
+		this.placeShipType = e.target.getAttribute('id');
+		document.getElementById(this.placeShipType).setAttribute('class', 'placing');
+		this.placeShipDirection = parseInt(document.getElementById('rotate-button').getAttribute('data-direction'));
 		self.placingOnGrid = true;
 	}
 
@@ -182,9 +191,9 @@ export class Game {
 			var y = parseInt(e.target.getAttribute('data-y'));
 
 			// Don't screw up the direction if the user tries to place again.
-			var successful = self.humanFleet.placeShip(x, y, Game.placeShipDirection, Game.placeShipType);
+			var successful = self.humanFleet.placeShip(x, y, this.placeShipDirection, this.placeShipType);
 			if (successful) {
-				self.endPlacing(Game.placeShipType);
+				self.endPlacing(this.placeShipType);
 				self.placingOnGrid = false;
 				if (self.areAllShipsPlaced()) {
 					var el = document.getElementById('rotate-button');
@@ -211,14 +220,14 @@ export class Game {
 			for (var i = 0; i < fleetRoster.length; i++) {
 				var shipType = fleetRoster[i].type;
 
-				if (Game.placeShipType === shipType &&
-					fleetRoster[i].isLegal(x, y, Game.placeShipDirection)) {
+				if (this.placeShipType === shipType &&
+					fleetRoster[i].isLegal(x, y, this.placeShipDirection)) {
 					// Virtual ship
-					fleetRoster[i].create(x, y, Game.placeShipDirection, true);
-					Game.placeShipCoords = fleetRoster[i].getAllShipCells();
+					fleetRoster[i].create(x, y, this.placeShipDirection, true);
+					this.placeShipCoords = fleetRoster[i].getAllShipCells();
 
-					for (var j = 0; j < Game.placeShipCoords.length; j++) {
-						var slug = Grid.createGridCellSlug(Game.placeShipCoords[j].x, Game.placeShipCoords[j].y);
+					for (var j = 0; j < this.placeShipCoords.length; j++) {
+						var slug = Grid.createGridCellSlug(this.placeShipCoords[j].x, this.placeShipCoords[j].y);
 						var el = document.querySelector("." + slug);
 						var classes = el.getAttribute('class');
 						// Check if the substring ' grid-ship' already exists to avoid adding it twice
@@ -236,8 +245,8 @@ export class Game {
 	placementMouseout(e) {
 		var self = e.target.self;
 		if (self.placingOnGrid) {
-			for (var j = 0; j < Game.placeShipCoords.length; j++) {
-				var slug = Grid.createGridCellSlug(Game.placeShipCoords[j].x, Game.placeShipCoords[j].y);
+			for (var j = 0; j < this.placeShipCoords.length; j++) {
+				var slug = Grid.createGridCellSlug(this.placeShipCoords[j].x, this.placeShipCoords[j].y);
 				var el = document.querySelector("." + slug);
 				var classes = el.getAttribute('class');
 				// Check if the substring ' grid-ship' already exists to avoid adding it twice
@@ -249,6 +258,34 @@ export class Game {
 		}
 	}
 
+	// Click handler for the Help text
+	toggleHelp(e) {
+		var el = document.getElementById('help');
+		if (el.getAttribute('class') === 'hidden') {
+			el.removeAttribute('class');
+		} else {
+			el.setAttribute('class', 'hidden');
+		}
+	}
+
+	addTooltipTitle() {
+		// Select the header with an id of title
+		var tooltipElement = document.getElementById('title');
+		var tooltip = document.createElement('div');
+		tooltip.textContent = 'Click to toggle Help';
+		document.body.appendChild(tooltip);
+		// Show the tooltip when the mouse enters the tooltip element
+		tooltipElement.addEventListener('mouseenter', function (event) {
+			tooltip.style.display = 'block';
+			tooltip.style.left = event.pageX + 'px';
+			tooltip.style.top = (event.pageY + 10) + 'px';
+			tooltip.classList = 'tooltip';
+		});
+		tooltipElement.addEventListener('mouseleave', function () {
+			tooltip.style.display = 'none';
+		});
+	}
+
 	// Click handler for the Rotate Ship button
 	toggleRotation(e) {
 		// Toggle rotation direction
@@ -256,9 +293,9 @@ export class Game {
 		var value = '0'
 		if (direction === Ship.DIRECTION_VERTICAL) {
 			value = '1';
-			Game.placeShipDirection = Ship.DIRECTION_HORIZONTAL;
+			this.placeShipDirection = Ship.DIRECTION_HORIZONTAL;
 		} else {
-			Game.placeShipDirection = Ship.DIRECTION_VERTICAL;
+			this.placeShipDirection = Ship.DIRECTION_VERTICAL;
 		}
 		e.target.setAttribute('data-direction', value);
 	}
@@ -267,11 +304,9 @@ export class Game {
 	startGame(e) {
 		var self = e.target.self;
 		var el = document.getElementById('roster-sidebar');
-		var fn = function () { el.setAttribute('class', 'hidden'); };
-		// el.addEventListener(transitionEndEventName(), fn, false);
+		// var fn = function () { el.setAttribute('class', 'hidden'); }; JFD check if this is needed
 		el.setAttribute('class', 'invisible');
 		self.readyToPlay = true;
-		// el.removeEventListener(transitionEndEventName(), fn, false);
 	}
 
 	// Click handler for Restart Game button
@@ -300,9 +335,9 @@ export class Game {
 		this.usedShips[CONST.AVAILABLE_SHIPS.indexOf(shipType)] = CONST.USED;
 
 		// Wipe out the variable when you're done with it
-		Game.placeShipDirection = null;
-		Game.placeShipType = '';
-		Game.placeShipCoords = [];
+		this.placeShipDirection = null;
+		this.placeShipType = '';
+		this.placeShipCoords = [];
 	}
 
 	// Checks whether or not all ships are done placing
@@ -317,21 +352,21 @@ export class Game {
 			}
 		}
 		// Reset temporary variables
-		Game.placeShipDirection = 0;
-		Game.placeShipType = '';
-		Game.placeShipCoords = [];
+		this.placeShipDirection = 0;
+		this.placeShipType = '';
+		this.placeShipCoords = [];
 		return true;
 	}
 
 	resetFogOfWar() {
-		for (var i = 0; i < Game.size; i++) {
-			for (var j = 0; j < Game.size; j++) {
+		for (var i = 0; i < CONST.SIZE; i++) {
+			for (var j = 0; j < CONST.SIZE; j++) {
 				this.humanGrid.updateCell(i, j, 'empty', CONST.HUMAN_PLAYER);
 				this.computerGrid.updateCell(i, j, 'empty', CONST.COMPUTER_PLAYER);
 			}
 		}
 		// Reset all values to indicate the ships are ready to be placed again
-		this.usedShips = Game.usedShips.map(function () { return CONST.UNUSED; });
+		this.usedShips = this.usedShips.map(function () { return CONST.UNUSED; });
 	}
 	// Resets CSS styling of roster elements
 	resetRosterSidebar() {
@@ -369,8 +404,8 @@ export class Game {
 		var gridDiv = document.querySelectorAll('.grid');
 		for (var grid = 0; grid < gridDiv.length; grid++) {
 			gridDiv[grid].removeChild(gridDiv[grid].querySelector('.no-js')); // Removes the no-js warning
-			for (var i = 0; i < Game.size; i++) {
-				for (var j = 0; j < Game.size; j++) {
+			for (var i = 0; i < CONST.SIZE; i++) {
+				for (var j = 0; j < CONST.SIZE; j++) {
 					const slug = Grid.createGridCellSlug(i, j);
 					var el = document.createElement('div');
 					el.setAttribute('data-x', i);

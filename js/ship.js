@@ -64,9 +64,9 @@ export class Ship {
 
 	withinBounds(x, y, direction) {
 		if (direction === Ship.DIRECTION_VERTICAL) {
-			return x + this.shipLength <= Game.size;
+			return x + this.shipLength <= CONST.SIZE;
 		} else {
-			return y + this.shipLength <= Game.size;
+			return y + this.shipLength <= CONST.SIZE;
 		}
 	}
 	

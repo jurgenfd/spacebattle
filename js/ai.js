@@ -45,7 +45,7 @@ export class AI {
 
 	constructor(game) {
 		this.game = game;
-		this.virtualGrid = new Grid(Game.size);
+		this.virtualGrid = new Grid(CONST.SIZE);
 		this.virtualFleet = new Fleet(this.game, this.virtualGrid, CONST.VIRTUAL_PLAYER);
 		this.probGrid = [];
 		this.initProbs();
@@ -67,8 +67,8 @@ export class AI {
 			}
 		}
 
-		for (var x = 0; x < Game.size; x++) {
-			for (var y = 0; y < Game.size; y++) {
+		for (var x = 0; x < CONST.SIZE; x++) {
+			for (var y = 0; y < CONST.SIZE; y++) {
 				if (this.probGrid[x][y] > maxProbability) {
 					maxProbability = this.probGrid[x][y];
 					maxProbs = [{ 'x': x, 'y': y }]; // Replace the array
@@ -85,8 +85,8 @@ export class AI {
 		var result = this.game.shoot(maxProbCoords.x, maxProbCoords.y, CONST.HUMAN_PLAYER);
 
 		// If the game ends, the next lines need to be skipped.
-		if (Game.gameOver) {
-			Game.gameOver = false;
+		if (this.gameOver) {
+			this.gameOver = false;
 			return;
 		}
 
@@ -131,8 +131,8 @@ export class AI {
 
 		// JFD: implementation is inefficient
 		for (var k = 0; k < roster.length; k++) {
-			for (var x = 0; x < Game.size; x++) {
-				for (var y = 0; y < Game.size; y++) {
+			for (var x = 0; x < CONST.SIZE; x++) {
+				for (var y = 0; y < CONST.SIZE; y++) {
 					if (roster[k].isLegal(x, y, Ship.DIRECTION_VERTICAL)) {
 						roster[k].create(x, y, Ship.DIRECTION_VERTICAL, true);
 						coords = roster[k].getAllShipCells();
@@ -172,10 +172,10 @@ export class AI {
 
 	// Initializes the probability grid for targeting
 	initProbs() {
-		for (var x = 0; x < Game.size; x++) {
+		for (var x = 0; x < CONST.SIZE; x++) {
 			var row = [];
 			this.probGrid[x] = row;
-			for (var y = 0; y < Game.size; y++) {
+			for (var y = 0; y < CONST.SIZE; y++) {
 				row.push(0);
 			}
 		}
@@ -183,8 +183,8 @@ export class AI {
 
 	// Resets the probability grid to all 0.
 	resetProbs() {
-		for (var x = 0; x < Game.size; x++) {
-			for (var y = 0; y < Game.size; y++) {
+		for (var x = 0; x < CONST.SIZE; x++) {
+			for (var y = 0; y < CONST.SIZE; y++) {
 				this.probGrid[x][y] = 0;
 			}
 		}

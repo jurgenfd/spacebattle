@@ -1,6 +1,6 @@
 import { Game } from './battleGame.js';
 
-var game = new Game(10);
+var game = new Game();
 game.setupAI();
 
 console.log('Done');

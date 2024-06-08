@@ -1,3 +1,5 @@
+import { Game } from './battleGame.js';
+
 export class Stats {
 	constructor() {
 		this.shotsTaken = 0;
@@ -38,13 +40,6 @@ export class Stats {
 		} else {
 			this.skipCurrentGame = false;
 		}
-
-		var stringifiedGrid = '';
-		for (var x = 0; x < Game.size; x++) {
-			for (var y = 0; y < Game.size; y++) {
-				stringifiedGrid += '(' + x + ',' + y + '):' + mainGame.humanGrid.cells[x][y] + ';\n';
-			}
-		}
 	}
 
 	updateStatsSidebar() {
@@ -59,18 +54,18 @@ export class Stats {
 		// Skip tracking stats until the end of the current game or else
 		// the accuracy percentage will be wrong (since you are tracking
 		// hits that didn't start from the beginning of the game)
-		Game.stats.skipCurrentGame = true;
+		this.stats.skipCurrentGame = true;
 		localStorage.setItem('totalShots', 0);
 		localStorage.setItem('totalHits', 0);
 		localStorage.setItem('gamesPlayed', 0);
 		localStorage.setItem('gamesWon', 0);
-		Game.stats.shotsTaken = 0;
-		Game.stats.shotsHit = 0;
-		Game.stats.totalShots = 0;
-		Game.stats.totalHits = 0;
-		Game.stats.gamesPlayed = 0;
-		Game.stats.gamesWon = 0;
-		Game.stats.updateStatsSidebar();
+		this.stats.shotsTaken = 0;
+		this.stats.shotsHit = 0;
+		this.stats.totalShots = 0;
+		this.stats.totalHits = 0;
+		this.stats.gamesPlayed = 0;
+		this.stats.gamesWon = 0;
+		this.stats.updateStatsSidebar();
 	};
 
 	/*! ripped from	mailto:robert@broofa.com JFD: The ! instructs a minifier to keep this in.*/

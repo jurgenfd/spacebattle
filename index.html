@@ -15,8 +15,25 @@
 
 <body>
 	<div class="container">
-		<h1>SpaceBattle</h1>
-		<p class="tagline">AI beats space captain.</p>
+		<h1 id="title">SpaceBattle</h1>
+		<div id="help" class="hidden">
+			<p class="tagline">AI beats space captain.</p>
+			<ol class="instructions"> Instructions
+				<li id="step1">Select your ships from the left-hand side</li>
+				<li id="step2">Place your ships on your map</li>
+				<li id="step3">Click on the cells of the enemy's map<br>
+					to find and destroy all five enemy ships</li>
+				<li id="step4">The computer will fire on your ships<br>
+					immediately after you fire on its ships.</li>
+			</ol>
+			<ul class="legend">Legend
+				<li>blue - space (empty)</li>
+				<li>grey - undamaged ship</li>
+				<li>white - water with a hit in it (missed shot)</li>
+				<li>red - damaged ship (hit shot)</li>
+				<li>black - destroyed</li>
+			</ul>
+		</div>
 		<div class="game-container">
 			<div id="restart-sidebar" class="hidden">
 				<h2>Try Again</h2>

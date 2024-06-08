@@ -2,17 +2,17 @@ import { CONST } from './global.js';
 
 export class Grid {
 	constructor(size) {
-		this.size = size;
+		CONST.SIZE = size;
 		this.cells = [];
 		this.init();
 	}
 
 	// Init and populate the grid
 	init() {
-		for (var x = 0; x < this.size; x++) {
+		for (var x = 0; x < CONST.SIZE; x++) {
 			var row = [];
 			this.cells[x] = row;
-			for (var y = 0; y < this.size; y++) {
+			for (var y = 0; y < CONST.SIZE; y++) {
 				row.push(CONST.TYPE_EMPTY);
 			}
 		}
