@@ -1,21 +1,30 @@
+/* Validated with:
+https://jigsaw.w3.org/css-validator 
+- Not checked the static vars and dynamic import.
+VSCode plugin: CSSTree Validator 
+*/
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
-/* Validated with https://jigsaw.w3.org/css-validator and the VSCode plugin: CSSTree Validator */
 
 /* variables */
 :root {
-	--min_width: 860px;
+	--min_width: 660px;
 	--out_of_sight: -9999px;
-	--board_width: 420px;
+	--board_width: 320px;
 	--std_padding: 5px;
-	--board_width_with_padding: 430px;
-	--cell_width: 40px;
-	--sidebar_width: 150px;
+	--board_width_with_padding: 330px;
+	--cell_width: 30px;
+	--sidebar_width: 100px;
+	--sidebar_offset: -20px;
+	--tooltip_padding: 5px;
+	--border-radius: 5px;
+
 	--gray: #ddd;
 	--blackish: #222222;
 	--lightblack: #222222;
 	--deepblue: #25567B;
 	--buttonblue: #99C2E1;
 	--button_shade: #66A3D2;
+	--orange_shade0: #FF7605;
 	--orange_shade1: #FFB655;
 	--orange_shade2: #FFCE8E;
 }
@@ -27,10 +36,9 @@ body {
 	margin: 0pt;
 	background-color: var(--gray);
 	min-width: var(--min_width);
-	/* TODO: mobile first */
 }
 
-h1,
+*/ h1,
 h2,
 h3,
 h4,
@@ -48,19 +56,42 @@ a {
 	font-weight: bold;
 }
 
-/* a:hover {
-	text-decoration: none;
-} */
+.instructions, .legend {
+	width: auto;
+	display: inline-block;
+	text-align: left;
+	margin: 0 auto 0 auto;
+}
+
+#help_text {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.flex_column {
+	display: flex;
+	flex-direction: column;
+}
 
 button {
-	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+	/* font-family: 'Open Sans', Helvetica, Arial, sans-serif; */
 	font-size: 1.2em;
 	color: lightgray;
 	background-color: var(--deepblue);
 	border: none;
 	margin: 1em auto 0 auto;
-	padding: 10px;
-	border-radius: 5px;
+	padding: var(--std_padding);
+	border-radius: var(--border-radius);
+}
+
+div {
+	padding: 0;
+	margin: 0;
+	/** box-sizing: border-box; JFD: see section "content boxes and border boxes" 
+	in https://internetingishard.netlify.app/html-and-css/css-box-model/	
+	tip from Stefan but unneeded after fixing another bug.
+	*/
 }
 
 button:hover {
@@ -109,15 +140,10 @@ button:active {
 	background-position: var(--out_of_sight) var(--out_of_sight);
 }
 
-.tagline {
-	margin-bottom: 2em;
-}
-
-.instructions {
-	width: auto;
-	display: inline-block;
-	text-align: left;
-	margin: 0 auto 3em auto;
+.tagline, h1, h2 {
+	margin-bottom: 0em;
+	margin-block-start: 0.0em;
+	margin-block-end: 0.0em;
 }
 
 .container {
@@ -134,21 +160,20 @@ button:active {
 #stats-sidebar,
 #restart-sidebar {
 	width: var(--sidebar_width);
-	padding: 20px;
+	padding: var(--std_padding);	
 	margin: 0;
 	background-color: #EEEEEE;
 	position: absolute;
-	top: 4.5em;
+	top: 1em;
 	border-radius: 5px;
 }
-/* JFD: sidebars moved to the left of game-container*/
+
 #roster-sidebar,
 #restart-sidebar {
-	left: -200px;
+	left: var(--sidebar_offset);
 }
-
 #stats-sidebar {
-	right: -200px;
+	right: var(--sidebar_offset);
 }
 
 #roster-sidebar h2,
@@ -161,6 +186,7 @@ button:active {
 .fleet-roster {
 	position: relative;
 	list-style: none;
+	padding: 0;
 }
 
 /* JFD: button boat */
@@ -201,9 +227,17 @@ button {
 	/* JFD: to prevent click */
 }
 
-/* JFD: might be a default? 😀 */
 .hidden {
 	display: none;
+}
+
+.tooltip {
+	position: absolute;
+	display: none;
+	background-color: var(--white);
+	color: var(--orange_shade0);
+	padding: var(--tooltip_padding);
+	border-radius: var(--tooltip_border-radius);
 }
 
 /* JFD: board */
@@ -222,11 +256,6 @@ button {
 	border-radius: 5px;
 }
 
-/* JFD: grid div */
-.grid-container:last-child {
-	margin-left: 10px;
-	border: #F60018;
-}
 
 /* JFD: will be removed by JS */
 .no-js {
@@ -269,11 +298,12 @@ button {
 .human-player .grid-ship:hover {
 	background-color: #808080;
 }
+
 /* JFD: ship hit */
 .grid-miss,
 .grid-miss:hover,
 .human-player .grid-miss:hover {
-	background-color: black;
+	background-color: white;
 	background-image: url('../img/cross-icon.svg');
 	background-position: center;
 	background-repeat: no-repeat;
@@ -294,54 +324,3 @@ button {
 	background-color: #222222;
 }
 
-.highlight {
-	overflow: visible;
-	/* Bugfix for IE JFD: TODO why?*/
-}
-
-/* Unicode Character “↓” (U+2193) 
-a big bouncing orange arrow above current element*/
-.highlight:before {
-	content: "\2193";
-	font-weight: bold;
-	font-size: 75px;
-	color: orange;
-	text-shadow: 0 0 5px orange;
-	position: absolute;
-	width: 100px;
-	height: 100px;
-	top: -100px;
-	left: 50%;
-	margin-left: -50px;
-	/* JFD: see below keyframes for animation */
-	animation: highlight 1.5s infinite;
-}
-
-.current-step {
-	font-weight: bold;
-}
-
-@media(max-width: 1300px) {
-	.container {
-		width: 440px;
-	}
-
-	.grid-container:last-child {
-		margin-left: 0;
-	}
-}
-
-/* JFD: bouncing orange arrow */
-@keyframes highlight {
-	0% {
-		transform: translateY(0);
-	}
-
-	50% {
-		transform: translateY(-20px);
-	}
-
-	100% {
-		transform: translateY(0);
-	}
-}
