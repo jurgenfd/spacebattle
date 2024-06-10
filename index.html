@@ -10,29 +10,36 @@
 	<link rel="author" href="https://github.com/jurgenfd">
 	<link href="css/styles.css" rel="stylesheet" media="all">
 	<link href="css/style_validation.css" rel="stylesheet" media="all">
-	<script defer type="module" src="js/_main.js"></script>
+	<!-- module scripts are deferred by default. -->
+	<script type="module" src="js/_main.js"></script>
 </head>
 
 <body>
 	<div class="container">
-		<h1 id="title">SpaceBattle</h1>
+		<h2 id="title">SpaceBattle</h2>
 		<div id="help" class="hidden">
 			<p class="tagline">AI beats space captain.</p>
-			<ol class="instructions"> Instructions
-				<li id="step1">Select your ships from the left-hand side</li>
-				<li id="step2">Place your ships on your map</li>
-				<li id="step3">Click on the cells of the enemy's map<br>
-					to find and destroy all five enemy ships</li>
-				<li id="step4">The computer will fire on your ships<br>
-					immediately after you fire on its ships.</li>
-			</ol>
-			<ul class="legend">Legend
-				<li>blue - space (empty)</li>
-				<li>grey - undamaged ship</li>
-				<li>white - water with a hit in it (missed shot)</li>
-				<li>red - damaged ship (hit shot)</li>
-				<li>black - destroyed</li>
-			</ul>
+			<div id="help_text">
+				<div class="flex_column">Instructions
+					<ol class="instructions">
+						<li id="step1">Select your ships from the left-hand side</li>
+						<li id="step2">Place your ships on your map</li>
+						<li id="step3">Click on the cells of the enemy's map<br>
+							to find and destroy all five enemy ships</li>
+						<li id="step4">The computer will fire on your ships<br>
+							immediately after you fire on its ships.</li>
+					</ol>
+				</div>
+				<div class="flex_column">Legend
+					<ul class="legend">
+						<li>blue - space (empty)</li>
+						<li>grey - undamaged ship</li>
+						<li>white - water with a hit in it (missed shot)</li>
+						<li>red - damaged ship (hit shot)</li>
+						<li>black - destroyed</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 		<div class="game-container">
 			<div id="restart-sidebar" class="hidden">
@@ -40,7 +47,7 @@
 				<button type="button" id="restart-game">Restart Game</button>
 			</div>
 			<div id="roster-sidebar">
-				<h2>Place Your Ships</h2>
+				<h2>Ships</h2>
 				<ul class="fleet-roster">
 					<li id="patrolboat">Patrol Boat</li>
 					<li id="submarine">Submarine</li>
@@ -51,7 +58,7 @@
 				<!-- JFD: data-direction is used by JS where: Ship.DIRECTION_VERTICAL = 0; -->
 				<button type="button" id="rotate-button" data-direction="0">Rotate Ship</button>
 				<button type="button" id="start-game" class="hidden">Start Game</button>
-				<button type="button" id="place-randomly" class="hidden">Place Randomly and Start</button>
+				<button type="button" id="place-randomly" class="hidden">Place Randomly</button>
 			</div>
 			<div id="stats-sidebar">
 				<h2>Stats</h2>
@@ -63,12 +70,12 @@
 				<button type="button" id="prob-heatmap" class="hidden">Show Probability Heatmap</button>
 			</div>
 			<div class="grid-container">
-				<h2>Your Fleet</h2>
+				<h2>You</h2>
 				<div class="grid human-player"><span class="no-js">Please enable JavaScript to play this game</span>
 				</div>
 			</div>
 			<div class="grid-container">
-				<h2>Enemy Fleet</h2>
+				<h2>Enemy</h2>
 				<div class="grid computer-player"><span class="no-js">Please enable JavaScript to play this game</span>
 				</div>
 			</div>

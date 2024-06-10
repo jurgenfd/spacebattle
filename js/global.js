@@ -41,5 +41,10 @@ export const CONST = {
     /** Ship is being used for placing during setup */
     USED: 1,
     /** Ship is not being placed during setup */
-    UNUSED: 0
+    UNUSED: 0,
+
+    /** A full finger to the right of the place touched/clicked */
+    TOOLTIP_SHIFTY: 10,
+    /** ms */
+    TOOLTIP_TIMEOUT: 2000
 }

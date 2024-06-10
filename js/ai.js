@@ -1,6 +1,5 @@
 import { CONST } from './global.js';
 import { Grid } from './grid.js';
-import { Game } from './battleGame.js';
 import { Ship } from './ship.js';
 import { Fleet } from './fleet.js';
 

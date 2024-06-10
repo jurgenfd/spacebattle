@@ -4,12 +4,12 @@ export class Stats {
 	constructor() {
 		this.shotsTaken = 0;
 		this.shotsHit = 0;
-		this.totalShots = parseInt(localStorage.getItem('totalShots')) || 0; // TODO: JFD: radix can be omitted
+		this.totalShots = parseInt(localStorage.getItem('totalShots')) || 0;
 		this.totalHits = parseInt(localStorage.getItem('totalHits')) || 0;
 		this.gamesPlayed = parseInt(localStorage.getItem('gamesPlayed')) || 0;
 		this.gamesWon = parseInt(localStorage.getItem('gamesWon')) || 0;
 		this.uuid = localStorage.getItem('uuid') || Stats.createUUID();
-		this.skipCurrentGame = false; // TODO: check if needed to be true when not debugging
+		this.skipCurrentGame = false;
 	}
 
 	incrementShots() {
@@ -46,26 +46,33 @@ export class Stats {
 		var elWinPercent = document.getElementById('stats-wins');
 		var elAccuracy = document.getElementById('stats-accuracy');
 		elWinPercent.innerHTML = this.gamesWon + " of " + this.gamesPlayed;
-		elAccuracy.innerHTML = Math.round((100 * this.totalHits / this.totalShots) || 0) + "%";
+		var accuracy = 'NaN';
+		if (this.totalShots !== 0) {
+			accuracy = Math.round(100 * this.totalHits / this.totalShots) + " %";
+		} 
+		elAccuracy.innerHTML = accuracy;
 	};
 
 	// Reset all game statistics to zero. Doesn't reset uuid.
 	resetStats(e) {
+		var stats = e.target.stats;
 		// Skip tracking stats until the end of the current game or else
 		// the accuracy percentage will be wrong (since you are tracking
 		// hits that didn't start from the beginning of the game)
-		this.stats.skipCurrentGame = true;
+		stats.skipCurrentGame = true;
+		stats.shotsTaken = 0;
+		stats.shotsHit = 0;
+		stats.totalShots = 0;
+		stats.totalHits = 0;
+		stats.gamesPlayed = 0;
+		stats.gamesWon = 0;
+
 		localStorage.setItem('totalShots', 0);
 		localStorage.setItem('totalHits', 0);
 		localStorage.setItem('gamesPlayed', 0);
 		localStorage.setItem('gamesWon', 0);
-		this.stats.shotsTaken = 0;
-		this.stats.shotsHit = 0;
-		this.stats.totalShots = 0;
-		this.stats.totalHits = 0;
-		this.stats.gamesPlayed = 0;
-		this.stats.gamesWon = 0;
-		this.stats.updateStatsSidebar();
+
+		stats.updateStatsSidebar();
 	};
 
 	/*! ripped from	mailto:robert@broofa.com JFD: The ! instructs a minifier to keep this in.*/
