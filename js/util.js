@@ -1,29 +1,35 @@
-// Browser compatibility workaround for transition end event names.
-// From modernizer: http://stackoverflow.com/a/9090128
-export function transitionEndEventName() {
-	var i,
-		undefined,
-		el = document.createElement('div'),
-		transitions = {
-			'transition':'transitionend'
-		};
+// function attached to window object
+(function () {
+    /** Exposed top-level function for debugging in browser. */
+    window.setLogLevel = function (val) {
+        window.logLevel = val;
+        debug('Debugging set to: ' + window.logLevel);
+    };
 
-	for (i in transitions) {
-		if (transitions.hasOwnProperty(i) && el.style[i] !== undefined) {
-			return transitions[i];
-		}
-	}
-}
+    /** Order matters in this list */
+    let LOG_LEVELS = 'DEBUG INFO WARNING ERROR'.split(' ');
+    window.logLevel = LOG_LEVELS[1]; // default
 
-// Returns a random number between min (inclusive) and max (exclusive)
-export function getRandom(min, max) {
-	return Math.random() * (max - min) + min;
-}
-
-// Toggles on or off DEBUG_MODE
-export function setDebug(val) {
-	DEBUG_MODE = val;
-	localStorage.setItem('DEBUG_MODE', val);
-	localStorage.setItem('showTutorial', 'false');
-	window.location.reload();
-}
+    window.debug = function (message) {
+        if (LOG_LEVELS.indexOf(window.logLevel) <= 0) {
+            console.debug(LOG_LEVELS[0] + ': ' + message);
+        }
+    };
+    window.log = function (message) {
+        if (LOG_LEVELS.indexOf(window.logLevel) <= 1) {
+            console.log(LOG_LEVELS[1] + ': ' + message);
+        }
+    };
+    window.warn = function (message) {
+        if (LOG_LEVELS.indexOf(window.logLevel) <= 2) {
+            console.warn(LOG_LEVELS[2] + ': ' + message);
+        }
+    };
+    window.error = function (message) {
+        console.error(LOG_LEVELS[3] + ': ' + message);
+    };
+})();
+// setLogLevel('DEBUG');
+console.log("If you want to try stuff out, run %csetLogLevel('DEBUG');%c in the " +
+    "console before doing anything. You'll also get access to some cool features.",
+    "background: #000; color: #0f0; padding: 2px 5px; border-radius: 2px;", "");

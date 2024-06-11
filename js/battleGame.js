@@ -1,25 +1,32 @@
 // Starting game at the bottom of the file.
 import { CONST } from './global.js';
+// import { Util } from './util.js';
 import { Grid } from './grid.js';
 import { Fleet } from './fleet.js';
 import { Ship } from './ship.js';
 import { Stats } from './stats.js';
 import { AI } from './ai.js';
+import { IO } from './io.js';
 
 export class Game {
 
 	constructor() {
+		this.gameOver = false;
 		this.usedShips = [CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED];
 		this.shotsTaken = 0;
+		/** Set when human placed complete roster */
 		this.readyToPlay = false;
+		/** Set while human placing roster */
 		this.placingOnGrid = false;
-		this.createGrid();
 		this.placeShipDirection = 0;
 		this.placeShipType = '';
 		this.placeShipCoords = [];
-		this.gameOver = false;
+		this.createGrid();
 		this.stats = new Stats();
 		this.stats.updateStatsSidebar();
+		/** undefined ideal for declaration without assignment
+		 * null is nice to unassign a variable or as a null-object */
+		this.io = undefined;
 		this.init();
 	}
 
@@ -28,13 +35,16 @@ export class Game {
 		this.computerGrid = new Grid(CONST.SIZE);
 		this.humanFleet = new Fleet(this, this.humanGrid, CONST.HUMAN_PLAYER);
 		this.computerFleet = new Fleet(this, this.computerGrid, CONST.COMPUTER_PLAYER);
-
 		this.resetRosterSidebar();
 		this.setupListeners();
 	}
 
 	setupAI() {
 		this.robot = new AI(this);
+	}
+
+	setupIO() {
+		this.io = new IO(this);
 	}
 
 	setupListeners() {
@@ -76,16 +86,21 @@ export class Game {
 		var resetButton = document.getElementById('reset-stats');
 		resetButton.game = this;
 		resetButton.addEventListener('click', this.stats.resetStats, false);
-		resetButton.stats = this.stats; // 
+		resetButton.stats = this.stats;
 
 		var randomButton = document.getElementById('place-randomly');
 		randomButton.game = this;
 		randomButton.addEventListener('click', this.placeRandomly, false);
-		this.computerFleet.placeShipsRandomly();
+
+		var loadButton = document.getElementById('load-game');
+		loadButton.game = this;
+		loadButton.addEventListener('click', this.loadGame, false);
 
 		var titleText = document.getElementById('title');
 		titleText.addEventListener('click', this.toggleHelp, false);
 		this.addTooltipTitle();
+
+		this.computerFleet.placeShipsRandomly();
 	}
 
 	checkIfWon() {
@@ -117,7 +132,7 @@ export class Game {
 			targetFleet = this.computerFleet;
 		} else {
 			// Should never be called
-			console.log("ERROR: There was an error trying to find the correct player to target");
+			error("There was an error trying to find the correct player to target");
 		}
 
 		if (targetGrid.isDamagedShip(x, y)) {
@@ -158,7 +173,7 @@ export class Game {
 			if (result === CONST.TYPE_HIT) {
 				game.stats.hitShot();
 			}
-			// The AI shoots iff the player clicks on a cell that he/she hasn't
+			// The AI shoots if the player clicks on a cell that he/she hasn't
 			// already clicked on yet
 			game.robot.shoot();
 		} else {
@@ -198,14 +213,6 @@ export class Game {
 			if (successful) {
 				game.endPlacing(game.placeShipType);
 				game.placingOnGrid = false;
-				if (game.areAllShipsPlaced()) {
-					var el = document.getElementById('rotate-button');
-					// el.addEventListener(transitionEndEventName(), (function () {
-					// 	el.setAttribute('class', 'hidden');
-					// 	document.getElementById('start-game').removeAttribute('class');
-					// }), false);
-					el.setAttribute('class', 'invisible');
-				}
 			}
 		}
 	}
@@ -291,9 +298,9 @@ export class Game {
 			tooltip.style.display = 'none';
 		};
 		tooltipElement.addEventListener('mouseenter', showTooltip);
-		tooltipElement.addEventListener('touchstart', showTooltip);
 		tooltipElement.addEventListener('mouseleave', hideTooltip);
-		tooltipElement.addEventListener('touchend', hideTooltip);
+		// tooltipElement.addEventListener('touchstart', showTooltip); // See: TODO in README.md
+		// tooltipElement.addEventListener('touchend', hideTooltip);
 	}
 
 	// Click handler for the Rotate Ship button
@@ -319,7 +326,6 @@ export class Game {
 		el.setAttribute('class', 'invisible');
 		game.readyToPlay = true;
 	}
-
 	// Click handler for Restart Game button
 	restartGame(e) {
 		// e.target.removeEventListener(e.type, arguments.callee); // no need to remove as it's a one-time click
@@ -328,12 +334,30 @@ export class Game {
 		game.resetFogOfWar();
 		game.init();
 	}
+	// Click handler for Load Game button
+	loadGame(e) {
+		var game = e.target.game;
+		game.io.loadGame();
+	}
+
+	saveGame() {
+		if (this.io === undefined) {
+			this.setupIO();
+		}
+		if (!this.io.wasAlive) {
+			warn("Server dead, cannot save game.");
+			return;
+		}
+		this.io.saveServerGame();
+		debug("Saved game on server.");
+	}
 
 	/** Debugging function used to place all ships and just start */
 	placeRandomly(e) {
-		// e.target.removeEventListener // no need to remove as it's a one-time click
-		e.target.game.humanFleet.placeShipsRandomly();
-		e.target.game.readyToPlay = true;
+		var game = e.target.game;
+		game.humanFleet.placeShipsRandomly();
+		game.readyToPlay = true;
+		game.io.saveServerGame();
 		document.getElementById('roster-sidebar').setAttribute('class', 'hidden');
 		this.setAttribute('class', 'hidden');
 	}
@@ -341,12 +365,10 @@ export class Game {
 	// Ends placing the current ship
 	endPlacing(shipType) {
 		document.getElementById(shipType).setAttribute('class', 'placed');
-
 		// Mark the ship as 'used'
 		this.usedShips[CONST.AVAILABLE_SHIPS.indexOf(shipType)] = CONST.USED;
-
 		// Wipe out the variable when you're done with it
-		this.placeShipDirection = null;
+		this.placeShipDirection = undefined;
 		this.placeShipType = '';
 		this.placeShipCoords = [];
 	}

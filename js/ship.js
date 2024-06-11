@@ -32,7 +32,7 @@ export class Ship {
 				this.shipLength = 2;
 				break;
 			default:
-				log('ERROR: Ship type not found for type: ' + type);
+				error('Ship type not found for type: ' + type);
 				this.shipLength = 3;
 				break;
 		}

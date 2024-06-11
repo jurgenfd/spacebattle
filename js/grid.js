@@ -7,6 +7,8 @@ export class Grid {
 		this.init();
 	}
 
+
+
 	// Init and populate the grid
 	init() {
 		for (var x = 0; x < CONST.SIZE; x++) {
@@ -32,7 +34,7 @@ export class Grid {
 			player = 'computer-player';
 		} else {
 			// Should never be called
-			console.log("ERROR: There was an error trying to find the correct player's grid");
+			error("There was an error trying to find the correct player's grid");
 		}
 
 		switch (type) {
@@ -52,7 +54,7 @@ export class Grid {
 				this.cells[x][y] = CONST.TYPE_SUNK;
 				break;
 			default:
-				this.cells[x][y] = CONST.TYPE_EMPTY;
+				error("There was an error trying to update the cell for type: " + type);
 				break;
 		}
 		var slug = Grid.createGridCellSlug(x, y);

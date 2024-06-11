@@ -46,5 +46,7 @@ export const CONST = {
     /** A full finger to the right of the place touched/clicked */
     TOOLTIP_SHIFTY: 10,
     /** ms */
-    TOOLTIP_TIMEOUT: 2000
+    TOOLTIP_TIMEOUT: 2000,
 }
+
+

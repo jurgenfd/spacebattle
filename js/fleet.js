@@ -14,15 +14,17 @@ export class Fleet {
 
 	populate() {
 		for (var i = 0; i < this.numShips; i++) {
-			// loop over the ship types when numShips > Constants.AVAILABLE_SHIPS.length
-			var j = i % this.numShips;
-			this.fleetRoster.push(new Ship(CONST.AVAILABLE_SHIPS[j], this.playerGrid, this.player));
+			this.fleetRoster.push(new Ship(CONST.AVAILABLE_SHIPS[i], this.playerGrid, this.player));
 		}
 	}
 
 
-	/** Places the ship 
-	 *  @return whether or not the placement was successful
+	/** 
+	 * @param {number} x
+	 * @param {number} y
+	 * @param {number} direction (DIRECTION_VERTICAL or DIRECTION_HORIZONTAL)
+	 * @param {string} shipType (carrier, ...)
+	 * @return {boolean} whether or not the placement was successful
 	 */
 	placeShip(x, y, direction, shipType) {
 		var shipCoords;
@@ -47,7 +49,6 @@ export class Fleet {
 		var shipCoords;
 		for (var i = 0; i < this.fleetRoster.length; i++) {
 			var illegalPlacement = true;
-
 			// Prevents the random placement of already placed ships
 			if (this.player === CONST.HUMAN_PLAYER && this.game.usedShips[i] === CONST.USED) {
 				continue;
@@ -74,7 +75,10 @@ export class Fleet {
 		}
 	}
 
-	/** @returns ship object || null */
+	/** 
+	 * @param {number} x
+	 * @param {number} y
+	 * @returns ship object || null */
 	findShipByCoords(x, y) {
 		for (var i = 0; i < this.fleetRoster.length; i++) {
 			var currentShip = this.fleetRoster[i];
@@ -99,10 +103,10 @@ export class Fleet {
 		return null;
 	}
 
-	// Finds a ship by its type
-	// Param shipType is a string
-	// Returns the ship object that is of type shipType
-	// If no ship exists, this returns null.
+	/** 
+	 * @param {string} shipType
+	 * @returns ship || null
+	 */
 	findShipByType(shipType) {
 		for (var i = 0; i < this.fleetRoster.length; i++) {
 			if (this.fleetRoster[i].type === shipType) {
@@ -112,6 +116,9 @@ export class Fleet {
 		return null;
 	}
 
+	/** 
+	 * @returns {boolean}
+	 */
 	allShipsSunk() {
 		for (var i = 0; i < this.fleetRoster.length; i++) {
 			// If one or more ships are not sunk, then the sentence "all ships are sunk" is false.
