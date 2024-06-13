@@ -4,7 +4,9 @@
 export const CONST = {
     /** Fixed board sizing */
     SIZE: 10,
-    /** Same length occurs in these ships by line. */
+    /** See: https://github.com/jurgenfd/webdev-javascript-notes/tree/main/zeeslag-api 
+     * Zeeslag api requires specific set of sized ships; names don't matter.
+     * Same length occurs in these ships by line. */
     AVAILABLE_SHIPS: [
         'carrier',
         'battleship', 'missiler',

@@ -1,6 +1,5 @@
 // Starting game at the bottom of the file.
 import { CONST } from './global.js';
-// import { Util } from './util.js';
 import { Grid } from './grid.js';
 import { Fleet } from './fleet.js';
 import { Ship } from './ship.js';
@@ -119,15 +118,18 @@ export class Game {
 		this.showRestartSidebar();
 	}
 
-	// Shoots at the target player on the grid.
-	// Returns {int} Constants.TYPE: What the shot uncovered
+	/** Shoots at the target player on the grid.
+	 * @param {number} targetPlayer 
+	 * @returns {int} Constants.TYPE: What the shot uncovered.
+	 */
 	shoot(x, y, targetPlayer) {
 		var targetGrid;
 		var targetFleet;
-		if (targetPlayer === CONST.HUMAN_PLAYER) {
+		// === would have checked if they are strictly equal to each other; Unimportant for this code.
+		if (targetPlayer == CONST.HUMAN_PLAYER) {
 			targetGrid = this.humanGrid;
 			targetFleet = this.humanFleet;
-		} else if (targetPlayer === CONST.COMPUTER_PLAYER) {
+		} else if (targetPlayer == CONST.COMPUTER_PLAYER) {
 			targetGrid = this.computerGrid;
 			targetFleet = this.computerFleet;
 		} else {
@@ -143,7 +145,7 @@ export class Game {
 			// update the board/grid
 			targetGrid.updateCell(x, y, 'hit', targetPlayer);
 			// IMPORTANT: This function needs to be called _after_ updating the cell to a 'hit',
-			// because it overrides the CSS class to 'sunk' if we find that the ship was sunk
+			// because it overrides the CSS class to 'sunk' if we find that the ship was sunk.
 			// BUG: 
 			// TODO: 
 			// JFD: on next line in original code as the ship appears not always to be found.
@@ -336,8 +338,7 @@ export class Game {
 	}
 	// Click handler for Load Game button
 	loadGame(e) {
-		var game = e.target.game;
-		game.io.loadGame();
+		window.location.href = "profile.html"; // Redirect to profile then to the game list and back here ;-)
 	}
 
 	saveGame() {

@@ -48,14 +48,11 @@
 				<button type="button" id="restart-game">Restart Game</button>
 			</div>
 			<div id="roster-sidebar">
+				<button type="button" id="load-game">Load Game</button>
 				<button type="button" id="place-randomly">Place Randomly</button>
 				<h2>Ships</h2>
 				<ul class="fleet-roster">
-					<!-- zeeslag api requires:
-						'V': 6 * 1,
-						'S': 4 * 2,	
-						'O': 3 * 3,
-						'P': 2 * 4, -->
+					<!-- zeeslag api requires specific set of sized ships; names don't matter. -->
 					<!-- V - Vliegdekship van 6x1 -->
 					<li id="carrier">Carrier</li>
 					<!-- S - Slagschip van 4x2 -->
@@ -73,7 +70,6 @@
 				</ul>
 				<button type="button" id="rotate-button" data-direction="0">Rotate Ship</button>
 				<button type="button" id="start-game" class="hidden">Start Game</button>
-				<button type="button" id="load-game">Load Game</button>
 			</div>
 			<div id="stats-sidebar">
 				<h2>Stats</h2>

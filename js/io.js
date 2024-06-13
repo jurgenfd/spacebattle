@@ -48,9 +48,6 @@ export class IO {
 	}
 
 	async saveServerGame() {
-
-		let serverBoard = this.toServerBoard(true);
-
 		//Step 1 - Create a server-side game 
 		let create_game_body = {
 			player1: IO.playerName,
@@ -69,15 +66,13 @@ export class IO {
 		console.log(one_game);
 
 		//Step 3 - Push the human's board server-side
-		let gameBoard_for_submit = {
-			"board": serverBoard
-		}
+		let serverBoard = this.toServerBoard(true);
+		let gameBoard_for_submit = { "board": serverBoard }
 		let request_url = IO.getUrlEnd(`game/${this.gameId}/board/${IO.playerName}`);
 		response = await IO.send_json_post(request_url, gameBoard_for_submit);
 		let board_result = await response.json();
 		console.log("Board result:")
 		console.log(board_result);
-
 	}
 
 	/**
@@ -137,10 +132,27 @@ export class IO {
 		return IO.shipSlugList[index];
 	}
 
-	/** Get a remote game */
-	async loadGame() {
-		debug("ignoring loadGame() for now");
+	sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
 	}
+
+	/**
+	 * @param {RemoteGame} current_game
+	 */
+	async loadRemoteGame(current_game) {
+		debug("Starting loadRemoteGame for game id: " + current_game.id);
+		if (!this.wasAlive) {
+			debug("Wait a sec in loadRemoteGame()");
+			await sleep(2000);
+			if (!this.wasAlive) {
+				debug("Server is not alive, cannot load remote game");
+				return;
+			}
+		}
+		let game_id = current_game.id;
+		// TODO: finish this
+	}
+
 
 	static getUrlEnd(endpoint) {
 		return `${IO.api_url}/` + endpoint;
