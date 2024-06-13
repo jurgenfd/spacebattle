@@ -16,3 +16,4 @@ Always happens when horizontally finishing the last one on the right. The left s
 Publish from local dev machine to home server
 rsync -ave ssh /Volumes/Sleuteld/Avans/WebDev/Code/spacebattle \
   jd@dododoos:/Users/jd/Sites
+

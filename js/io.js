@@ -116,6 +116,7 @@ export class IO {
 				return "0";
 		}
 	}
+	
 	/**
 	 * 
 	 * @param {string} type 
@@ -132,27 +133,42 @@ export class IO {
 		return IO.shipSlugList[index];
 	}
 
-	sleep(ms) {
+	static sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
 
 	/**
-	 * @param {RemoteGame} current_game
+	 * The board info is incompatible with the server-side board info so this 
+	 * function is not feasible to do. E.g. the server-side board info has the 
+	 * info pér cell i.s.o. pér ship. Perfect backcalculation might be impossible in some cases.
+	 * @param {RemoteGame} current_servergame
 	 */
-	async loadRemoteGame(current_game) {
-		debug("Starting loadRemoteGame for game id: " + current_game.id);
+	async loadServerGame(current_servergame) {
+		debug("Starting loadRemoteGame for game id: " + current_servergame.id);
 		if (!this.wasAlive) {
 			debug("Wait a sec in loadRemoteGame()");
-			await sleep(2000);
+			await IO.sleep(1000);
 			if (!this.wasAlive) {
 				debug("Server is not alive, cannot load remote game");
 				return;
 			}
 		}
-		let game_id = current_game.id;
-		// TODO: finish this
-	}
+		// current_game {"id":"66671eb2c8ad007bdbe4c6f6","player1":"spacebattle_human_player",
+		// "player2":"AI","boardWidth":10,"boardHeight":10,"state":"setup",
+		// "player1Shots":[],"player2Shots":[],"player1board":false,"player2board":false}
+		let game_id = current_servergame.id;
 
+		// current_servergame is not complete so let's get it completely.
+
+
+		response = await fetch(`${IO.api_url}/game/${this.gameId}`)
+		let one_game = await response.json();
+		console.log("One game:")
+		console.log(one_game);
+		let human_board = one_game.player1board;
+		let computer_board = one_game.player2board;
+		// Populating the fleet is hardly possible.
+	}
 
 	static getUrlEnd(endpoint) {
 		return `${IO.api_url}/` + endpoint;
@@ -170,7 +186,6 @@ export class IO {
 			headers: { "Content-Type": "application/json" }
 		});
 	}
-
 
 	/**
 	 * @param {string} url 

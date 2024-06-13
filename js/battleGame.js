@@ -8,7 +8,7 @@ import { AI } from './ai.js';
 import { IO } from './io.js';
 
 export class Game {
-
+	
 	constructor() {
 		this.gameOver = false;
 		this.usedShips = [CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED];

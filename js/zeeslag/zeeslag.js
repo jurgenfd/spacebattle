@@ -20,7 +20,7 @@ profile_el.innerHTML = profile;
 async function getAllGames() {
     let response = await fetch(`${host}/player/${profile}/game`)
     let all_games = await response.json();
-    games_el.innerHTML = '';
+    games_el.innerHTML = ''; // JFD: Clear the "loading..." message
     for (let i = 0; i < all_games.length; i++) {
         let game = all_games[i];
         let game_el = document.createElement('li');
