@@ -7,35 +7,19 @@ export class Ship {
 	static DIRECTION_VERTICAL = 0;
 	static DIRECTION_HORIZONTAL = 1;
 
-	/** playerGrid is of type Grid */
+	/** 
+	 * @param {string} type
+	 * @param {Grid} playerGrid
+	 * @param {number} player
+	*/
 	constructor(type, playerGrid, player) {
 		this.damage = 0;
+		/** @type string */
 		this.type = type;
 		this.sunk = false;
 		this.playerGrid = playerGrid;
 		this.player = player;
-
-		switch (this.type) {
-			case CONST.AVAILABLE_SHIPS[0]:
-				this.shipLength = 5;
-				break;
-			case CONST.AVAILABLE_SHIPS[1]:
-				this.shipLength = 4;
-				break;
-			case CONST.AVAILABLE_SHIPS[2]:
-				this.shipLength = 3;
-				break;
-			case CONST.AVAILABLE_SHIPS[3]:
-				this.shipLength = 3;
-				break;
-			case CONST.AVAILABLE_SHIPS[4]:
-				this.shipLength = 2;
-				break;
-			default:
-				error('Ship type not found for type: ' + type);
-				this.shipLength = 3;
-				break;
-		}
+		this.shipLength = CONST.SHIP_LENGTH_MAP[ CONST.AVAILABLE_SHIPS.indexOf(type) ];
 		this.maxDamage = this.shipLength;
 	}
 

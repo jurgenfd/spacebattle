@@ -12,7 +12,7 @@
 	<link href="css/style_validation.css" rel="stylesheet" media="all">
 	<script defer src="js/util.js"></script>
 	<!-- module scripts are deferred by default. -->
-	 <script type="module" src="js/_main.js"></script>
+	<script type="module" src="js/_main.js"></script>
 </head>
 
 <body>
@@ -51,11 +51,25 @@
 				<button type="button" id="place-randomly">Place Randomly</button>
 				<h2>Ships</h2>
 				<ul class="fleet-roster">
-					<li id="patrolboat">Patrol Boat</li>
+					<!-- zeeslag api requires:
+						'V': 6 * 1,
+						'S': 4 * 2,	
+						'O': 3 * 3,
+						'P': 2 * 4, -->
+					<!-- V - Vliegdekship van 6x1 -->
+					<li id="carrier">Carrier</li>
+					<!-- S - Slagschip van 4x2 -->
+					<li id="battleship">Battleship</li>
+					<li id="missiler">Missiler</li>
+					<!-- O - Onderzeeboot van 3* 3 -->
 					<li id="submarine">Submarine</li>
 					<li id="destroyer">Destroyer</li>
-					<li id="battleship">Battleship</li>
-					<li id="carrier">Carrier</li>
+					<li id="deepmarine">Deepmarine</li>
+					<!-- P - Patrouilleschip van 3* 3 -->
+					<li id="patrolboat">Patrol Boat</li>
+					<li id="surfboard">Surfboard</li>
+					<li id="dinghy">Dinghy</li>
+					<li id="lifeboat">Liveboat</li>
 				</ul>
 				<button type="button" id="rotate-button" data-direction="0">Rotate Ship</button>
 				<button type="button" id="start-game" class="hidden">Start Game</button>

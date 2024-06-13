@@ -5,4 +5,4 @@ import { Game } from './battleGame.js';
 var game = new Game();
 game.setupAI(); // TODO: make lazy.
 game.setupIO();
-console.log('Done from _main.js');
+debug('Done');

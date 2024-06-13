@@ -4,9 +4,19 @@
 export const CONST = {
     /** Fixed board sizing */
     SIZE: 10,
-    /** Same length occurs in these ships. */
-    AVAILABLE_SHIPS: ['carrier', 'battleship', 'destroyer', 'submarine', 'patrolboat'],
-
+    /** Same length occurs in these ships by line. */
+    AVAILABLE_SHIPS: [
+        'carrier',
+        'battleship', 'missiler',
+        'submarine', 'destroyer', 'deepmarine',
+        'patrolboat', 'surfboard', 'dinghy', 'lifeboat'],
+    /** Parallel to AVAILABLE_SHIPS */
+    SHIP_LENGTH_MAP: { 
+        0: 6,
+        1: 4, 2: 4,
+        3: 3, 4: 3, 5: 3,
+        6: 2, 7: 2, 8: 2, 9: 2
+    },
     /**  You are player 0 */
     HUMAN_PLAYER: 0,
     /**  Computer is player 1 */
