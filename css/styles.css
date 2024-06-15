@@ -67,7 +67,7 @@ span {
 #help_text,
 #attribution,
 .tagline,
-li {
+#help_text li {
 	color: white;
 }
 
