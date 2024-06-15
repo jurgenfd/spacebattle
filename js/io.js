@@ -6,7 +6,7 @@ import { Fleet } from './fleet.js';
  * https://github.com/jurgenfd/webdev-javascript-notes
  */
 
-/** TODO: eliminate the "Data Clump" code smell and use it in other code as well. */
+/** Eliminated the "Data Clump" code smell here. */
 export class Coor {
 	/** @param {number} x @param {number} y */
 	constructor(x, y) {
@@ -48,7 +48,7 @@ export class IO {
 	}
 
 	async saveServerGame() {
-		// return; // TODO: disable after debugging.
+		return; // TODO: disable after debugging.
 		//Step 1 - Create a server-side game 
 		let create_game_body = {
 			player1: IO.playerName,
@@ -160,15 +160,13 @@ export class IO {
 		let game_id = current_servergame.id;
 
 		// current_servergame is not complete so let's get it completely.
-
-
 		response = await fetch(`${IO.api_url}/game/${this.gameId}`)
 		let one_game = await response.json();
 		console.log("One game:")
 		console.log(one_game);
 		let human_board = one_game.player1board;
 		let computer_board = one_game.player2board;
-		// Populating the fleet is hardly possible.
+		// Populating the fleet is hardly possible so giving up here :-(
 	}
 
 	static getUrlEnd(endpoint) {

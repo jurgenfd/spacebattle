@@ -6,7 +6,6 @@ export class Grid {
 		this.cells = [];
 		this.init();
 	}
-
 	// Init and populate the grid
 	init() {
 		for (var x = 0; x < CONST.SIZE; x++) {
@@ -31,17 +30,18 @@ export class Grid {
 	}
 
 	/** Updates the cell's CSS class based on the css type passed in
+	 * or if the type is null, it will update the cell based on the already present cell's type.
 	 * @param {string|null} type
 	 */
 	updateCell(x, y, type, targetPlayer) {
 		var player;
 		if (targetPlayer === CONST.HUMAN_PLAYER) {
-			player = 'human-player';
+			player = CONST.HUMAN_PLAYER_STRING;
 		} else if (targetPlayer === CONST.COMPUTER_PLAYER) {
-			player = 'computer-player';
+			player = CONST.COMPUTER_PLAYER_STRING;
 		} else {
-			// Should never be called
 			error("There was an error trying to find the correct player's grid");
+			return;
 		}
 		if (type === null) {
 			type = CONST.TYPE_2_CSS_MAP[this.cells[x][y]]
@@ -70,7 +70,8 @@ export class Grid {
 		var slug = Grid.createGridCellSlug(x, y);
 		var classes = ['grid-cell', slug]
 		/** Cheat the computer by showing it's ships */
-		if (window.cheat || targetPlayer === CONST.HUMAN_PLAYER ||
+		if (window.cheat || 
+			targetPlayer === CONST.HUMAN_PLAYER ||
 			(targetPlayer === CONST.COMPUTER_PLAYER && 
 				(type !== CONST.CSS_TYPE_SHIP && type !== CONST.CSS_TYPE_EMPTY))
 		) {
@@ -85,7 +86,7 @@ export class Grid {
 	isUndamagedShip(x, y) {
 		return this.cells[x][y] === CONST.TYPE_SHIP;
 	};
-
+	
 	// Checks to see if the shot was missed. This is equivalent
 	// to checking if a cell contains a cannonball
 	isMiss(x, y) {

@@ -3,12 +3,19 @@ import { Ship } from './ship.js';
 import { Game } from './battleGame.js';
 
 export class Fleet {
+
+	/**
+	 * @param {Game} game
+	 * @param {Grid} playerGrid
+	 * @param {string} player
+	 */
+	 // to get nav working better in IDE
 	constructor(game, playerGrid, player) {
 		this.game = game;
 		this.numShips = CONST.AVAILABLE_SHIPS.length;
 		this.playerGrid = playerGrid;
 		this.player = player;
-		/** @type [Ship] */ // to get nav working in IDE
+		/** @type [Ship] */ 
 		this.fleetRoster = []; // portfolio of ships
 		this.populate();
 	}
@@ -18,7 +25,6 @@ export class Fleet {
 			this.fleetRoster.push(new Ship(CONST.AVAILABLE_SHIPS[i], this.playerGrid, this.player));
 		}
 	}
-
 
 	/** 
 	 * @param {number} x
@@ -77,8 +83,6 @@ export class Fleet {
 	}
 
 	/** 
-	 * @param {number} x
-	 * @param {number} y
 	 * @returns ship object || null */
 	findShipByCoords(x, y) {
 		for (var i = 0; i < this.fleetRoster.length; i++) {

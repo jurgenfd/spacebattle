@@ -75,7 +75,7 @@ a {
 }
 
 button {
-	/* font-family: 'Open Sans', Helvetica, Arial, sans-serif; */
+	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 	font-size: 1.2em;
 	color: lightgray;
 	background-color: var(--deepblue);
@@ -95,8 +95,8 @@ div {
 }
 
 button:hover {
-	cursor: pointer;
 	/* JFD: hand */
+	cursor: pointer;
 	background-color: black;
 }
 
@@ -280,7 +280,6 @@ button {
 
 .grid-cell:hover {
 	cursor: pointer;
-	/* Fallback for IE */
 	background-color: var(--buttonblue_shade);
 }
 
@@ -294,12 +293,12 @@ button {
 	cursor: url('../img/crosshair.png') 16 16, crosshair;
 }
 
+
 .grid-ship,
-.human-player .grid-ship:hover {
+.human-player .grid-ship:hover { /* JFD: human-player's board from here and on. */
 	background-color: #808080;
 }
 
-/* JFD: ship hit */
 .grid-miss,
 .grid-miss:hover,
 .human-player .grid-miss:hover {
@@ -323,4 +322,3 @@ button {
 .human-player .grid-sunk:hover {
 	background-color: #222222;
 }
-

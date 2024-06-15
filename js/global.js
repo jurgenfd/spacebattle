@@ -25,10 +25,12 @@ export const CONST = {
     /** A virtual player is used for generating temporary ships for calculating the probability heatmap of AI.*/
     VIRTUAL_PLAYER: 2,
 
-    // Parallel info with the types below. Used for CSS classes.
+    HUMAN_PLAYER_STRING: 'human-player',
+    COMPUTER_PLAYER_STRING: 'computer-player',
 
+    // Parallel info with the types below. Used for CSS classes and the parallel types are runtime linked.
     /** space (empty) */
-    CSS_TYPE_EMPTY: 'empty',
+    CSS_TYPE_EMPTY: 'empty', 
     /** undamaged ship */
     CSS_TYPE_SHIP: 'ship',
     /** water with a cannonball in it (missed shot) */
@@ -61,10 +63,12 @@ export const CONST = {
     TOOLTIP_TIMEOUT: 2000,
 };
 
-CONST.TYPE_2_CSS_MAP = {
-    [CONST.TYPE_EMPTY]: CONST.CSS_TYPE_EMPTY,
-    [CONST.TYPE_SHIP]: CONST.CSS_TYPE_SHIP,
-    [CONST.TYPE_MISS]: CONST.CSS_TYPE_MISS,
-    [CONST.TYPE_HIT]: CONST.CSS_TYPE_HIT,
-    [CONST.TYPE_SUNK]: CONST.CSS_TYPE_SUNK
-};
+// JFD: No more hardcoded mapping. Suggested by Copilot.
+// Assuming CONST is already defined and has TYPE and CSS_TYPE properties
+CONST.TYPE_2_CSS_MAP = Object.keys(CONST).reduce((acc, key) => {
+    if (key.startsWith('TYPE_')) {
+        const cssKey = `CSS_${key}`;
+        acc[CONST[key]] = CONST[cssKey];
+    }
+    return acc;
+}, {});

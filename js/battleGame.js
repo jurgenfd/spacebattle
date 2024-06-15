@@ -8,7 +8,7 @@ import { AI } from './ai.js';
 import { IO } from './io.js';
 
 export class Game {
-	
+
 	constructor() {
 		this.gameOver = false;
 		/** Tracks the number of ships that have been placed by human */
@@ -25,7 +25,8 @@ export class Game {
 		this.stats = new Stats();
 		this.stats.updateStatsSidebar();
 		/** undefined ideal for declaration without assignment
-		 * null is nice to unassign a variable or as a null-object */
+		 * null is nice to unassign a variable or as a null-object 
+		 * @type IO */
 		this.io = undefined;
 		this.init();
 	}
@@ -160,17 +161,16 @@ export class Game {
 			result = CONST.TYPE_MISS;
 		}
 		return result;
-		
 	}
 
 	// Creates click event listeners on each one of the 100 grid cells
 	shootListener(e) {
 		var game = e.target.game;
-		// Extract coordinates from event listener
-		var x = parseInt(e.target.getAttribute('data-x'));
-		var y = parseInt(e.target.getAttribute('data-y'));
 		var result = null;
 		if (game.readyToPlay) {
+			// Extract coordinates from event listener
+			var x = parseInt(e.target.getAttribute('data-x'));
+			var y = parseInt(e.target.getAttribute('data-y'));
 			result = game.shoot(x, y, CONST.COMPUTER_PLAYER);
 		}
 
@@ -220,8 +220,8 @@ export class Game {
 	}
 
 	// Creates mouseover event listeners that handles mouseover on the
-	// human player's grid to draw a phantom ship implying that the user
-	// is allowed to place a ship there
+	// human player's grid to draw a phantom ship if the user
+	// is allowed to place a ship there.
 	placementMouseover(e) {
 		var game = e.target.game;
 		if (game.placingOnGrid) {
@@ -242,10 +242,7 @@ export class Game {
 						var slug = Grid.createGridCellSlug(game.placeShipCoords[j].x, game.placeShipCoords[j].y);
 						var el = document.querySelector("." + slug);
 						var classes = el.getAttribute('class');
-						// Check if the substring ' grid-ship' already exists to avoid adding it twice
-						if (classes.indexOf(' grid-ship') < 0) {
-							el.setAttribute('class', classes + ' grid-ship');
-						}
+						el.setAttribute('class', classes + ' grid-ship');
 					}
 				}
 			}
@@ -375,7 +372,7 @@ export class Game {
 	}
 
 	// Checks whether or not all ships are done placing
-	// Returns boolean
+	/** @returns boolean */
 	areAllShipsPlaced() {
 		var playerRoster = document.querySelectorAll('.fleet-roster li');
 		for (var i = 0; i < playerRoster.length; i++) {
@@ -418,7 +415,6 @@ export class Game {
 	showRestartSidebar() {
 		var sidebar = document.getElementById('restart-sidebar');
 		sidebar.setAttribute('class', 'highlight');
-
 		// Deregister listeners
 		var computerCells = document.querySelector('.computer-player').childNodes;
 		for (var j = 0; j < computerCells.length; j++) {
@@ -428,7 +424,6 @@ export class Game {
 		for (var i = 0; i < playerRoster.length; i++) {
 			playerRoster[i].removeEventListener('click', this.rosterListener, false);
 		}
-
 		var restartButton = document.getElementById('restart-game');
 		restartButton.addEventListener('click', this.restartGame, false);
 		restartButton.game = this;

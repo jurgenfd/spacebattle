@@ -1,5 +1,6 @@
 /* Validated with: https://jigsaw.w3.org/css-validator
 VSCode plugins: CSSTree Validator 
+Adapted from https://github.com/jurgenfd/webdev-javascript-notes -->
 */
 
 /* variables */
@@ -27,7 +28,7 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* height: 100vh; /* Lelijk; 100% of the viewport height
+    /* height: 100vh; /* JFD: Ugly; 100% of the viewport height
     width: 100vw; */
 }
 

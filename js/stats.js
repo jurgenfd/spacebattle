@@ -68,7 +68,7 @@ export class Stats {
 		stats.updateStatsSidebar();
 	};
 
-	/*! ripped from	mailto:robert@broofa.com JFD: The ! instructs a minifier to keep this in.*/
+	/*! ripped from	mailto:robert@broofa.com JFD: The ! in this comment instructs a minifier to keep this in. ;-) */
 	static createUUID(len, radix) {
 		var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(''),
 			uuid = [], i;

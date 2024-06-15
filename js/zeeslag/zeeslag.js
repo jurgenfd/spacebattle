@@ -10,8 +10,7 @@ if (!profile) {
 }
 
 /** The act of loading this page resets any selected game so we can cleanly start index.html 
- * with a new game.
- */
+ * with a new game. */
 localStorage.removeItem("selected_game");
 
 let profile_el = document.getElementById("profile");
