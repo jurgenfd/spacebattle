@@ -13,7 +13,6 @@ export class Stats {
 	incrementShots() {
 		this.shotsTaken++;
 		this.syncStats();
-		log("bla");
 	}
 	hitShot() {
 		this.shotsHit++;

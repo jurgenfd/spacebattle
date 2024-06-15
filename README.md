@@ -10,20 +10,27 @@ Stuff added w.r.t. Bill's
 - Published to private server at: https://ododo.nl/spacebattle/
 - Help made optional with nice tooltip.
 - Saving to with Zeeslag api at 'https://avans-webdev-zeeslag.azurewebsites.net'
-- Removed tutorial
+- Removed tutorial because my simplifications required it no more.
 - Changed roster to that required by Zeeslag
 - Added variables i.s.o. magic numbers in CSS and JS
-- Fixed stat values
+- Fixed stat values bugs
+- Added @type in common spots to aid nav in IDEs.
+- Worked mostly in Chrome but also in Safari Dev Tools
+- Understand the probability alg. in ai.js.
+- Debugged the probs. in ai.js so the opening book doesn't become dominant.
+- Rewrote to advanced loops as much as possible
+- Refactored to remove duplicate code
 
-Diffs with setup in assignment
+Differences between this game and the setup in school assignment with Zeeslag
 - Boats of same length have different names here. I.e. 
     Submarine and Destroyer both have length 3.
 
 TODO: 
--
+- Understand the probability alg. in ai.js.
+- Test restarts better.
 
-Known bugs
-- Sometimes a square is set to not to be sunk where the rest of the ship is. ;-)
+FIXME:
+- Sometimes in the human board a square is set to not to be sunk where the rest of the ship is. ;-)
 Always happens when horizontally finishing the last one on the right. The left square is bad.
 - On mobile the touch for the tooltip fails.
 

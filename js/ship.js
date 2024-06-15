@@ -82,6 +82,7 @@ export class Ship {
 	 *	{'x':3, 'y':2},
 	 *	{'x':4, 'y':2}
 	 * ]
+	 * @returns {Array.<{x: number, y: number}>}
 	 */
 	getAllShipCells() {
 		var resultObject = [];

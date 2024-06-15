@@ -28,7 +28,7 @@ export class IO {
 		this.game = game;
 		this.gameId = undefined;
 		this.wasAlive = false;
-		// IO.ping(); TODO: enable again after testing.
+		// IO.ping(); // TODO: enable again after testing.
 	}
 
 	/**
@@ -48,7 +48,7 @@ export class IO {
 	}
 
 	async saveServerGame() {
-		return; // TODO: disable after debugging.
+		// return; // TODO: disable after debugging.
 		//Step 1 - Create a server-side game 
 		let create_game_body = {
 			player1: IO.playerName,

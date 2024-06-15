@@ -70,7 +70,10 @@ export class Grid {
 		var slug = Grid.createGridCellSlug(x, y);
 		var classes = ['grid-cell', slug]
 		/** Cheat the computer by showing it's ships */
-		if (window.cheat || targetPlayer === CONST.HUMAN_PLAYER) {
+		if (window.cheat || targetPlayer === CONST.HUMAN_PLAYER ||
+			(targetPlayer === CONST.COMPUTER_PLAYER && 
+				(type !== CONST.CSS_TYPE_SHIP && type !== CONST.CSS_TYPE_EMPTY))
+		) {
 			if (this.cells[x][y] != CONST.TYPE_EMPTY) {
 				classes.push('grid-' + type);
 			}

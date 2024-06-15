@@ -8,6 +8,7 @@ export class Fleet {
 		this.numShips = CONST.AVAILABLE_SHIPS.length;
 		this.playerGrid = playerGrid;
 		this.player = player;
+		/** @type [Ship] */ // to get nav working in IDE
 		this.fleetRoster = []; // portfolio of ships
 		this.populate();
 	}

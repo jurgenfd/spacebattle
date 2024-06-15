@@ -35,8 +35,8 @@
         console.error(LOG_LEVELS[3] + ': ' + message);
     };
 })();
-setLogLevel('DEBUG');
-// setCheat('false');
+setLogLevel('INFO');
+setCheat(true);
 // setLogLevel('WARNING');
 // Below uses some markup for the console message and not be routed thru the hand-rolled logger.
 console.log("If you want to try stuff out, run %csetLogLevel('DEBUG'); / setCheat(true);%c in the " +
