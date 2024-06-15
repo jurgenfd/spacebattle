@@ -21,7 +21,7 @@
 		<div id="help" class="hidden">
 			<p class="tagline">AI beats space captain.</p>
 			<div id="help_text">
-				<div class="flex_column">Instructions
+				<div class="flex-column">Instructions
 					<ol class="instructions">
 						<li id="step1">Select your ships from the left-hand side</li>
 						<li id="step2">Place your ships on your map</li>
@@ -31,7 +31,7 @@
 							immediately after you fire on its ships.</li>
 					</ol>
 				</div>
-				<div class="flex_column">Legend
+				<div class="flex-column">Legend
 					<ul class="legend">
 						<li>blue - space (empty)</li>
 						<li>grey - undamaged ship</li>
@@ -71,6 +71,20 @@
 				<button type="button" id="rotate-button" data-direction="0">Rotate Ship</button>
 				<button type="button" id="start-game" class="hidden">Start Game</button>
 			</div>
+			<div class="flex-grid">
+				<div class="grid-container">
+					<h2>You</h2>
+					<div class="grid human-player"><span class="no-js">Please enable JavaScript to play this game</span>
+					</div>
+				</div>
+				<div class="grid-container">
+					<h2>Enemy</h2>
+					<div class="grid computer-player"><span class="no-js">Please enable JavaScript to play this
+							game</span>
+					</div>
+				</div>
+			</div>
+
 			<div id="stats-sidebar">
 				<h2>Stats</h2>
 				<p><strong>Games Won</strong></p>
@@ -82,19 +96,10 @@
 				<button type="button" id="reset-stats">Reset Stats</button>
 				<button type="button" id="prob-heatmap" class="hidden">Show Probability Heatmap</button>
 			</div>
-			<div class="grid-container">
-				<h2>You</h2>
-				<div class="grid human-player"><span class="no-js">Please enable JavaScript to play this game</span>
-				</div>
-			</div>
-			<div class="grid-container">
-				<h2>Enemy</h2>
-				<div class="grid computer-player"><span class="no-js">Please enable JavaScript to play this game</span>
-				</div>
-			</div>
 		</div>
 
-		<p>Adapted by Jurgen Doreleijers on <a href="https://github.com/jurgenfd/spacebattle">GitHub</a> from Bill Mei.
+		<p id="attribution">Adapted by Jurgen Doreleijers on <a
+				href="https://github.com/jurgenfd/spacebattle">GitHub</a> from Bill Mei.
 		</p>
 		<p>
 			<a href="http://jigsaw.w3.org/css-validator/check/referer">

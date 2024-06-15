@@ -10,6 +10,8 @@ VSCode plugins: CSSTree Validator
 	--out_of_sight: -9999px;
 	--board_width: 320px;
 	--std_padding: 5px;
+	--sidebar_padding: 10px;
+	--game-container-gap: 20px;
 	--board_width_with_padding: 330px;
 	--cell_width: 30px;
 	--sidebar_width: 100px;
@@ -32,13 +34,19 @@ VSCode plugins: CSSTree Validator
 html,
 body {
 	width: 100%;
+	height: 100%;
 	padding: 0pt;
 	margin: 0pt;
-	background-color: var(--gray);
 	min-width: var(--min_width);
 }
 
-*/ h1,
+html {
+	background-image: url('../img/pleiades.png');
+	background-size: cover;
+	background-position: center;
+}
+
+h1,
 h2,
 h3,
 h4,
@@ -51,12 +59,24 @@ span {
 	color: var(--blackish);
 }
 
-a {
-	color: var(--blackish);
-	font-weight: bold;
+#title,
+.grid-container h2 {
+	color: var(--orange_shade0);
 }
 
-.instructions, .legend {
+#help_text,
+#attribution,
+.tagline,
+li {
+	color: white;
+}
+
+a {
+	color: white;
+}
+
+.instructions,
+.legend {
 	width: auto;
 	display: inline-block;
 	text-align: left;
@@ -69,9 +89,21 @@ a {
 	justify-content: center;
 }
 
-.flex_column {
+.flex-column {
 	display: flex;
 	flex-direction: column;
+}
+
+.flex-grid {
+	display: flex;
+	flex-direction: row;
+	gap: var(--game-container-gap);
+}
+
+@media (max-width: 900px) {
+	.flex-grid {
+		flex-direction: column;
+	}
 }
 
 button {
@@ -140,40 +172,35 @@ button:active {
 	background-position: var(--out_of_sight) var(--out_of_sight);
 }
 
-.tagline, h1, h2 {
+.tagline,
+h1,
+h2 {
 	margin-bottom: 0em;
 	margin-block-start: 0.0em;
 	margin-block-end: 0.0em;
 }
 
 .container {
-	width: 870px;
 	text-align: center;
 	margin: 20px auto 100px auto;
 }
 
 .game-container {
-	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: var(--game-container-gap);
 }
 
 #roster-sidebar,
 #stats-sidebar,
 #restart-sidebar {
 	width: var(--sidebar_width);
-	padding: var(--std_padding);	
+	padding: var(--sidebar_padding);
 	margin: 0;
 	background-color: #EEEEEE;
-	position: absolute;
 	top: 1em;
 	border-radius: 5px;
-}
-
-#roster-sidebar,
-#restart-sidebar {
-	left: var(--sidebar_offset);
-}
-#stats-sidebar {
-	right: var(--sidebar_offset);
 }
 
 #roster-sidebar h2,
@@ -295,7 +322,8 @@ button {
 
 
 .grid-ship,
-.human-player .grid-ship:hover { /* JFD: human-player's board from here and on. */
+.human-player .grid-ship:hover {
+	/* JFD: human-player's board from here and on. */
 	background-color: #808080;
 }
 

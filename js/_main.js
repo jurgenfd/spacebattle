@@ -6,11 +6,7 @@ import { Game } from './battleGame.js';
 window.game = new Game();
 game.setupAI();
 game.setupIO();
-
 let current_game = JSON.parse(localStorage.getItem("selected_game"));
-
 if (current_game) {
     game.io.loadServerGame(current_game);
 }
-
-debug('Done');
