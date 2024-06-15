@@ -28,7 +28,7 @@ export class IO {
 		this.game = game;
 		this.gameId = undefined;
 		this.wasAlive = false;
-		IO.ping();
+		// IO.ping(); TODO: enable again after testing.
 	}
 
 	/**
@@ -48,6 +48,7 @@ export class IO {
 	}
 
 	async saveServerGame() {
+		return; // TODO: disable after debugging.
 		//Step 1 - Create a server-side game 
 		let create_game_body = {
 			player1: IO.playerName,
@@ -140,7 +141,7 @@ export class IO {
 	/**
 	 * The board info is incompatible with the server-side board info so this 
 	 * function is not feasible to do. E.g. the server-side board info has the 
-	 * info pér cell i.s.o. pér ship. Perfect backcalculation might be impossible in some cases.
+	 * info pér cell i.s.o. pér ship. Perfect back_calculation might be impossible in some cases.
 	 * @param {RemoteGame} current_servergame
 	 */
 	async loadServerGame(current_servergame) {

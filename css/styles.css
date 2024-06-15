@@ -22,7 +22,8 @@ VSCode plugins: CSSTree Validator
 	--lightblack: #222222;
 	--deepblue: #25567B;
 	--buttonblue: #99C2E1;
-	--button_shade: #66A3D2;
+	--grid_color: #99C2E1;
+	--button_shade: #5b8cb2;
 	--orange_shade0: #FF7605;
 	--orange_shade1: #FFB655;
 	--orange_shade2: #FFCE8E;
@@ -272,7 +273,7 @@ button {
 	height: var(--cell_width);
 	width: var(--cell_width);
 	display: inline-block;
-	background-color: var(--buttonblue);
+	background-color: var(--grid_color);
 	margin: 1px;
 	border-radius: 2px;
 }

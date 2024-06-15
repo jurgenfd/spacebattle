@@ -11,7 +11,8 @@ export class Game {
 	
 	constructor() {
 		this.gameOver = false;
-		this.usedShips = [CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED, CONST.UNUSED];
+		/** Tracks the number of ships that have been placed by human */
+		this.usedShips = new Array(CONST.AVAILABLE_SHIPS.length).fill(CONST.UNUSED);
 		this.shotsTaken = 0;
 		/** Set when human placed complete roster */
 		this.readyToPlay = false;
@@ -36,6 +37,7 @@ export class Game {
 		this.computerFleet = new Fleet(this, this.computerGrid, CONST.COMPUTER_PLAYER);
 		this.resetRosterSidebar();
 		this.setupListeners();
+		this.computerFleet.placeShipsRandomly();
 	}
 
 	setupAI() {
@@ -44,6 +46,11 @@ export class Game {
 
 	setupIO() {
 		this.io = new IO(this);
+	}
+
+	resetForCheat() {
+		this.humanGrid.resetForCheat(CONST.HUMAN_PLAYER);
+		this.computerGrid.resetForCheat(CONST.COMPUTER_PLAYER);
 	}
 
 	setupListeners() {
@@ -98,8 +105,6 @@ export class Game {
 		var titleText = document.getElementById('title');
 		titleText.addEventListener('click', this.toggleHelp, false);
 		this.addTooltipTitle();
-
-		this.computerFleet.placeShipsRandomly();
 	}
 
 	checkIfWon() {
@@ -132,31 +137,30 @@ export class Game {
 		} else if (targetPlayer == CONST.COMPUTER_PLAYER) {
 			targetGrid = this.computerGrid;
 			targetFleet = this.computerFleet;
+			this.stats.incrementShots();
 		} else {
 			// Should never be called
 			error("There was an error trying to find the correct player to target");
 		}
 
+		let result = null;
 		if (targetGrid.isDamagedShip(x, y)) {
-			return null;
 		} else if (targetGrid.isMiss(x, y)) {
-			return null;
 		} else if (targetGrid.isUndamagedShip(x, y)) {
-			// update the board/grid
+			if (targetPlayer == CONST.COMPUTER_PLAYER) {
+				this.stats.hitShot();
+			}
 			targetGrid.updateCell(x, y, 'hit', targetPlayer);
-			// IMPORTANT: This function needs to be called _after_ updating the cell to a 'hit',
-			// because it overrides the CSS class to 'sunk' if we find that the ship was sunk.
-			// BUG: 
-			// TODO: 
-			// JFD: on next line in original code as the ship appears not always to be found.
-			targetFleet.findShipByCoords(x, y).incrementDamage(); // increase the damage
+			targetFleet.findShipByCoords(x, y).incrementDamage();
 			this.checkIfWon();
-			return CONST.TYPE_HIT;
+			result = CONST.TYPE_HIT;
 		} else {
 			targetGrid.updateCell(x, y, 'miss', targetPlayer);
 			this.checkIfWon();
-			return CONST.TYPE_MISS;
+			result = CONST.TYPE_MISS;
 		}
+		return result;
+		
 	}
 
 	// Creates click event listeners on each one of the 100 grid cells
@@ -171,10 +175,6 @@ export class Game {
 		}
 
 		if (result !== null && !game.gameOver) {
-			game.stats.incrementShots();
-			if (result === CONST.TYPE_HIT) {
-				game.stats.hitShot();
-			}
 			// The AI shoots if the player clicks on a cell that he/she hasn't
 			// already clicked on yet
 			game.robot.shoot();
@@ -399,7 +399,7 @@ export class Game {
 				this.computerGrid.updateCell(i, j, 'empty', CONST.COMPUTER_PLAYER);
 			}
 		}
-		// Reset all values to indicate the ships are ready to be placed again
+		// Reset all values to indicate the ships are ready to be placed again.
 		this.usedShips = this.usedShips.map(function () { return CONST.UNUSED; });
 	}
 

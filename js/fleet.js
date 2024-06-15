@@ -66,11 +66,11 @@ export class Fleet {
 					continue;
 				}
 			}
-			if (this.player === CONST.HUMAN_PLAYER && this.game.usedShips[i] !== CONST.USED) {
-				for (var j = 0; j < shipCoords.length; j++) {
-					this.playerGrid.updateCell(shipCoords[j].x, shipCoords[j].y, 'ship', this.player);
-					this.game.usedShips[i] = CONST.USED;
-				}
+			for (var j = 0; j < shipCoords.length; j++) {
+				this.playerGrid.updateCell(shipCoords[j].x, shipCoords[j].y, 'ship', this.player);
+			}
+			if (this.player === CONST.HUMAN_PLAYER) {
+				this.game.usedShips[i] = CONST.USED;
 			}
 		}
 	}

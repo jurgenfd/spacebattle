@@ -1,5 +1,4 @@
 // Original app used real globals but they are discouraged in modern JS.
-// Global Constants organized in CONST
 
 export const CONST = {
     /** Fixed board sizing */
@@ -50,6 +49,7 @@ export const CONST = {
     /** sunk ship */
     TYPE_SUNK: 4,
 
+    
     /** Ship is being used for placing during setup */
     USED: 1,
     /** Ship is not being placed during setup */
@@ -59,6 +59,12 @@ export const CONST = {
     TOOLTIP_SHIFTY: 10,
     /** ms */
     TOOLTIP_TIMEOUT: 2000,
-}
+};
 
-
+CONST.TYPE_2_CSS_MAP = {
+    [CONST.TYPE_EMPTY]: CONST.CSS_TYPE_EMPTY,
+    [CONST.TYPE_SHIP]: CONST.CSS_TYPE_SHIP,
+    [CONST.TYPE_MISS]: CONST.CSS_TYPE_MISS,
+    [CONST.TYPE_HIT]: CONST.CSS_TYPE_HIT,
+    [CONST.TYPE_SUNK]: CONST.CSS_TYPE_SUNK
+};

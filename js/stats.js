@@ -4,8 +4,6 @@ export class Stats {
 	constructor() {
 		this.shotsTaken = 0;
 		this.shotsHit = 0;
-		this.totalShots = parseInt(localStorage.getItem('totalShots')) || 0;
-		this.totalHits = parseInt(localStorage.getItem('totalHits')) || 0;
 		this.gamesPlayed = parseInt(localStorage.getItem('gamesPlayed')) || 0;
 		this.gamesWon = parseInt(localStorage.getItem('gamesWon')) || 0;
 		this.uuid = localStorage.getItem('uuid') || Stats.createUUID();
@@ -14,9 +12,12 @@ export class Stats {
 
 	incrementShots() {
 		this.shotsTaken++;
+		this.syncStats();
+		log("bla");
 	}
 	hitShot() {
 		this.shotsHit++;
+		this.syncStats();
 	}
 	wonGame() {
 		this.gamesPlayed++;
@@ -28,27 +29,24 @@ export class Stats {
 
 	syncStats() {
 		if (!this.skipCurrentGame) {
-			var totalShots = parseInt(localStorage.getItem('totalShots')) || 0;
-			totalShots += this.shotsTaken;
-			var totalHits = parseInt(localStorage.getItem('totalHits')) || 0;
-			totalHits += this.shotsHit;
-			localStorage.setItem('totalShots', totalShots);
-			localStorage.setItem('totalHits', totalHits);
 			localStorage.setItem('gamesPlayed', this.gamesPlayed);
 			localStorage.setItem('gamesWon', this.gamesWon);
 			localStorage.setItem('uuid', this.uuid);
 		} else {
 			this.skipCurrentGame = false;
 		}
+		this.updateStatsSidebar();
 	}
 
 	updateStatsSidebar() {
 		var elWinPercent = document.getElementById('stats-wins');
 		var elAccuracy = document.getElementById('stats-accuracy');
+		var elShots = document.getElementById('stats-shots');
 		elWinPercent.innerHTML = this.gamesWon + " of " + this.gamesPlayed;
+		elShots.innerHTML = this.shotsTaken;
 		var accuracy = 'NaN';
-		if (this.totalShots !== 0) {
-			accuracy = Math.round(100 * this.totalHits / this.totalShots) + " %";
+		if (this.shotsTaken !== 0) {
+			accuracy = Math.round(100.0 * this.shotsHit / this.shotsTaken) + " %";
 		} 
 		elAccuracy.innerHTML = accuracy;
 	};
@@ -62,13 +60,9 @@ export class Stats {
 		stats.skipCurrentGame = true;
 		stats.shotsTaken = 0;
 		stats.shotsHit = 0;
-		stats.totalShots = 0;
-		stats.totalHits = 0;
 		stats.gamesPlayed = 0;
 		stats.gamesWon = 0;
 
-		localStorage.setItem('totalShots', 0);
-		localStorage.setItem('totalHits', 0);
 		localStorage.setItem('gamesPlayed', 0);
 		localStorage.setItem('gamesWon', 0);
 
