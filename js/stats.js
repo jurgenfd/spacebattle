@@ -1,5 +1,3 @@
-import { Game } from './battleGame.js';
-
 export class Stats {
 	constructor() {
 		this.shotsTaken = 0;

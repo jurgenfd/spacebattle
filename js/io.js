@@ -1,6 +1,4 @@
 import { CONST } from './global.js';
-import { Grid } from './grid.js';
-import { Ship } from './ship.js';
 import { Fleet } from './fleet.js';
 /** Based on Stijn Smulders API forked to:
  * https://github.com/jurgenfd/webdev-javascript-notes
@@ -21,14 +19,19 @@ export class IO {
 	static playerName = 'spacebattle_human_player';
 	// v for Dutch: vliegdekschip, s for slagschip, s for onderzeeër, o for onderzeeër, p for patrouilleschip
 	// as defined in CONST.AVAILABLE_SHIPS
-	static shipSlugList = 'vssooopppp'.split('');
-	// v for Dutch: vliegdekschip, s for slagschip, s for onderzeeër, o for onderzeeër, p for patrouilleschip
+	static shipCharList = 'vssooopppp'.split('');
+	// v for Dutch: vliegdekschip, 
+	// s for slagschip, 
+	// o for onderzeeër, and
+	// p for patrouilleschip
+
 	/** @param {Game} game */
 	constructor(game) {
 		this.game = game;
+		/** server-side game id */
 		this.gameId = undefined;
 		this.wasAlive = false;
-		// IO.ping(); // TODO: enable again after testing.
+		IO.ping(); // TODO: enable again after testing.
 	}
 
 	/**
@@ -38,7 +41,7 @@ export class IO {
 		let response = await fetch(`${IO.api_url}`);
 		let responseObject = await response;
 		debug("responseObject from io.ping():")
-		console.log(responseObject); // needs console.log to show the object
+		console.log(responseObject); // needs console.log to show the object i.s.o. hand-rolled logger.
 		if (responseObject.ok) {
 			debug("Ping successful");
 			this.wasAlive = true;
@@ -48,7 +51,7 @@ export class IO {
 	}
 
 	async saveServerGame() {
-		return; // TODO: disable after debugging.
+		// return; // TODO: disable after debugging.
 		//Step 1 - Create a server-side game 
 		let create_game_body = {
 			player1: IO.playerName,
@@ -60,11 +63,10 @@ export class IO {
 		debug(serverGame);
 		this.gameId = serverGame._id;
 
-		//Step 2 - Get the server-side game from the server
+		//Step 2 - Get the server-side game itself from the server by id.
 		response = await fetch(`${IO.api_url}/game/${this.gameId}`)
 		let one_game = await response.json();
-		console.log("One game:")
-		console.log(one_game);
+		console.log("One game:", one_game);
 
 		//Step 3 - Push the human's board server-side
 		let serverBoard = this.toServerBoard(true);
@@ -72,8 +74,7 @@ export class IO {
 		let request_url = IO.getUrlEnd(`game/${this.gameId}/board/${IO.playerName}`);
 		response = await IO.send_json_post(request_url, gameBoard_for_submit);
 		let board_result = await response.json();
-		console.log("Board result:")
-		console.log(board_result);
+		console.log("Board result:", board_result);
 	}
 
 	/**
@@ -111,27 +112,25 @@ export class IO {
 				return "0";
 			case CONST.TYPE_SHIP:
 				let ship = fleet.findShipByCoords(coor.x, coor.y);
-				return IO.getShipSlug(ship.type);
+				return IO.getShipChar(ship.type);
 			default:
 				error("There was an error trying to get the cell info for cell: " + cell);
 				return "0";
 		}
 	}
-	
+
 	/**
-	 * 
 	 * @param {string} type 
 	 * @returns {string} character for specific ship type
 	 */
-	static getShipSlug(type) {
+	static getShipChar(type) {
 		// AVAILABLE_SHIPS: ['carrier', 'battleship', 'destroyer', 'submarine', 'patrolboat'],
-
 		var index = CONST.AVAILABLE_SHIPS.indexOf(type);
 		if (index < 0) {
 			error("There was an error trying to get the ship slug for type: " + type);
 			return "0";
 		}
-		return IO.shipSlugList[index];
+		return IO.shipCharList[index];
 	}
 
 	static sleep(ms) {
@@ -150,7 +149,8 @@ export class IO {
 			debug("Wait a sec in loadRemoteGame()");
 			await IO.sleep(1000);
 			if (!this.wasAlive) {
-				debug("Server is not alive, cannot load remote game");
+				debug("Server is not alive as expected because ping wasn't done and we don't wait long enough.");
+				debug("cannot load remote game");
 				return;
 			}
 		}
@@ -162,8 +162,7 @@ export class IO {
 		// current_servergame is not complete so let's get it completely.
 		response = await fetch(`${IO.api_url}/game/${this.gameId}`)
 		let one_game = await response.json();
-		console.log("One game:")
-		console.log(one_game);
+		console.log("One game:", one_game);
 		let human_board = one_game.player1board;
 		let computer_board = one_game.player2board;
 		// Populating the fleet is hardly possible so giving up here :-(

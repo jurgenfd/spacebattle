@@ -39,6 +39,6 @@ setLogLevel('DEBUG');
 // setLogLevel('INFO');
 setCheat(false);
 // Below uses some markup for the console message and not be routed thru the hand-rolled logger.
-console.log("If you want to try stuff out, run %csetLogLevel('DEBUG'); / setCheat(true);%c in the " +
+console.log("If you want to try stuff out, run %csetLogLevel('DEBUG'); or setCheat(true);%c in the " +
     "console.",
     "background: #000; color: #0f0; padding: 2px 5px; border-radius: 2px;", "");
