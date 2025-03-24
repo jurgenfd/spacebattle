@@ -6,8 +6,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,maximum-scale=1">
 	<title>SpaceBattle - AI beats space captain.</title>
-	<link rel="icon" type="image/png" href="img/favicon.png">
-	<link rel="author" href="https://github.com/jurgenfd">
+	<link href="img/favicon.png" rel="icon" type="image/png" >
+	<link href="https://github.com/jurgenfd" rel="author">
 	<link href="css/styles.css" rel="stylesheet" media="all">
 	<link href="css/style_validation.css" rel="stylesheet" media="all">
 	<script defer src="js/util.js"></script>
@@ -71,7 +71,11 @@
 			<div class="flex-grid">
 				<div class="grid-container">
 					<h2>You</h2>
-					<div class="grid human-player"><span class="no-js">Please enable JavaScript to play this game</span>
+					<div class="grid human-player">
+						<template id="grid-row-template">
+							<div class="grid-cell"></div>
+						</template>
+						<span class="no-js">Please enable JavaScript to play this game</span>
 					</div>
 				</div>
 				<div class="grid-container">

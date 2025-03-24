@@ -2,7 +2,7 @@
 
 SpaceBattle - AI beats space captain.
 
-// Jurgen Doreleijers - https://github.com/jurgenfd/spacebattle
+// Jurgen Doreleijers - https://github.com/jurgenfd/spacebattle/tree/main
 based on https://github.com/billmei/battleboat
 
 
@@ -28,21 +28,28 @@ Notes
 - Rewrote to advanced loops as much as possible
 - Refactored to remove duplicate code
 
-Differences between this game and the setup in school assignment with Zeeslag are:
+
+Differences between this game and the school assignment "Zeeslag" are:
 - Boats of same length have different names here. I.e. 
     Submarine and Destroyer both have length 3.
 
-TODO: 
+TIP:
+- Jasper: rewrite with template for html already in .html. Or is this easier with
+a framework still?
+- Show real async functionality without await's. Because they kinda cancel it again.
+
+OUTSTANDING:
 - Test restarting after a game.
 
 FIXME:
 - On mobile the touch for the tooltip fails.
 - Extremely quick actions can lead to unforeseen throwables.
 
+<!-- 
 Publish from local dev machine to home server
 rsync -ave ssh /Volumes/Sleuteld/Avans/WebDev/Code/spacebattle \
   jd@dododoos:/Users/jd/Sites
-
+-->
 - Added funny spaceship names
 <!-- Was boring     Carrier
 					Battleship
@@ -54,7 +61,9 @@ rsync -ave ssh /Volumes/Sleuteld/Avans/WebDev/Code/spacebattle \
 					Surfboard
 					Dinghy
 					Liveboat 
-You might also like the result of prompt: Give me ten funny names for spaceships some of them should hint on how large they are and order them by largest size first. The names should be 12 or less chars without spaces.
+You might also like the result of prompt below:
+"""
+Give me ten funny names for spaceships. Some should hint on how large they are and order them by largest size first. The names should be 12 or less chars without spaces.
 My daughter thought this was the 💣
 					GalaxyGiant
 					StarCrusher
